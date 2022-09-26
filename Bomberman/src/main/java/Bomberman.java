@@ -1,5 +1,14 @@
+import GameObject.GameObject;
+import Graphics.Sprite;
 import javafx.application.Application;
-import javafx.stage;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.stage.Stage;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Bomberman extends Application {
 
@@ -8,17 +17,21 @@ public class Bomberman extends Application {
 
     private GraphicsContext gc;
     private Canvas canvas;
-    private List<Entity> entities = new ArrayList<>();
-    private List<Entity> stillObjects = new ArrayList<>();
-
-    public static void main(String[] args) {
-        Application.launch(Bomberman.class);
-    }
+    private List<GameObject> entities = new ArrayList<>();
+    private List<GameObject> stillObjects = new ArrayList<>();
 
     @Override
     public void start(Stage stage) {
-        canvas = new Canvas(WIDTH, HEIGHT);
+        canvas = new Canvas(WIDTH * Sprite.SIZE, HEIGHT * Sprite.SIZE);
         gc = canvas.getGraphicsContext2D();
+
+        Group root = new Group();
+        root.getChildren().add(canvas);
+
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+
+        stage.show();
     }
 
 
