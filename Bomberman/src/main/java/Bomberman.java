@@ -17,7 +17,7 @@ public class Bomberman extends Application {
 
     private GraphicsContext gc;
     private Canvas canvas;
-    private List<GameObject> entities = new ArrayList<>();
+    private List<GameObject> movingObjects = new ArrayList<>();
     private List<GameObject> stillObjects = new ArrayList<>();
 
     @Override
@@ -34,5 +34,15 @@ public class Bomberman extends Application {
         stage.show();
     }
 
+    public void update() {
+        movingObjects.forEach(GameObject::update);
+    }
+
+    public void render() {
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        stillObjects.forEach(g -> g.render(gc));
+        movingObjects.forEach(g -> g.render(gc));
+
+    }
 
 }
