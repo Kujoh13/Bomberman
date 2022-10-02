@@ -1,10 +1,14 @@
 import GameObject.GameObject;
+import GameObject.Player;
 import Graphics.Sprite;
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -19,6 +23,7 @@ public class Bomberman extends Application {
     private Canvas canvas;
     private List<GameObject> movingObjects = new ArrayList<>();
     private List<GameObject> stillObjects = new ArrayList<>();
+    private Player player = new Player();
 
     @Override
     public void start(Stage stage) {
@@ -29,13 +34,42 @@ public class Bomberman extends Application {
         root.getChildren().add(canvas);
 
         Scene scene = new Scene(root);
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                switch (event.getCode()) {
+                    case W:
+                        player.moveUp();
+                        break;
+                    case A:
+                        player.moveLeft();
+                        break;
+                    case S:
+                        player.moveDown();
+                        break;
+                    case D:
+                        player.moveRight();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                render();
+                update();
+            }
+        };
+        timer.start();
         stage.setScene(scene);
-
         stage.show();
     }
 
     public void update() {
         movingObjects.forEach(GameObject::update);
+
     }
 
     public void render() {
