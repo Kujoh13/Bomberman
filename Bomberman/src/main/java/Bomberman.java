@@ -18,7 +18,6 @@ public class Bomberman extends Application {
 
     public static final int WIDTH = 20;
     public static final int HEIGHT = 15;
-
     private GraphicsContext gc;
     private Canvas canvas;
     private List<GameObject> movingObjects = new ArrayList<>();
@@ -67,6 +66,7 @@ public class Bomberman extends Application {
         stage.show();
     }
 
+    /** Gameplay, character movement and enemies behaviour. */
     public void update() {
         movingObjects.forEach(GameObject::update);
 
