@@ -10,6 +10,9 @@ public abstract class GameObject {
     protected Image img;
 
     /** Initialize a GameObject. */
+    public GameObject() {
+
+    }
     public GameObject(int x, int y, Image img) {
         this.x = x;
         this.y = y;
