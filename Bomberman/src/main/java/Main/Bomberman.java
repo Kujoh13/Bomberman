@@ -1,3 +1,5 @@
+package Main;
+
 import GameObject.GameObject;
 import GameObject.Player;
 import Graphics.Sprite;
@@ -13,6 +15,7 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class Bomberman extends Application {
 
