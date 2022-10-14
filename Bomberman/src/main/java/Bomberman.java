@@ -1,4 +1,5 @@
 import GameObject.*;
+import GameObject.Player;
 import Graphics.Sprite;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
