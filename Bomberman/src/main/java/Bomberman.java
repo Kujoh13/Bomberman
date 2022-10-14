@@ -1,7 +1,4 @@
-package Main;
-
-import GameObject.GameObject;
-import GameObject.Player;
+import GameObject.*;
 import Graphics.Sprite;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
