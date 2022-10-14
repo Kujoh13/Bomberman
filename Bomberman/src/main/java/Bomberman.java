@@ -20,6 +20,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Bomberman extends Application {
 
     public static final int WIDTH = 25;
