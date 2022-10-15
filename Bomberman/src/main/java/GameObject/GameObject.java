@@ -14,8 +14,8 @@ public abstract class GameObject {
 
     }
     public GameObject(int x, int y, Image img) {
-        this.x = x;
-        this.y = y;
+        this.x = x * Sprite.SCALED_SIZE;
+        this.y = y * Sprite.SCALED_SIZE;
         this.img = img;
     }
 
