@@ -4,7 +4,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 
 public class Player extends GameObject {
-    public static int velocity = 5;
+    public static int velocity = 4;
     public Player() {
 
     }
@@ -17,7 +17,6 @@ public class Player extends GameObject {
     }
 
     public void moveUp() {
-        System.out.println("MOVE UP");
         y -= velocity;
     }
 

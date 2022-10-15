@@ -24,8 +24,8 @@ public abstract class GameObject {
     }
 
     public boolean collision(GameObject go) {
-        if (go.getX() >= x + Sprite.SIZE || x >= go.getX() + Sprite.SIZE
-            || go.getY() >= y + Sprite.SIZE || y >= go.getY() + Sprite.SIZE) {
+        if (go.getX() >= x + Sprite.SCALED_SIZE || x >= go.getX() + Sprite.SCALED_SIZE
+            || go.getY() >= y + Sprite.SCALED_SIZE || y >= go.getY() + Sprite.SCALED_SIZE) {
             return false;
         }
         return true;

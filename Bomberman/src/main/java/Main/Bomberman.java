@@ -69,18 +69,18 @@ public class Bomberman extends Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                update();
                 render();
+                update();
             }
         };
         timer.start();
         stage.setScene(scene);
         stage.show();
 
-        createMap();
+        //createMap();
         player = new Player(1, 1, Sprite.player_down.getFxImage());
         bomb = new Bomb(1, 1, Sprite.bomb.getFxImage());
-
+        movingObjects.add(player);
     }
 
     public void createMap() {
@@ -89,7 +89,7 @@ public class Bomberman extends Application {
         // Read map details from pixels from a .png file
         FileInputStream inputStream = null;
         try {
-            inputStream = new FileInputStream("\\Map\\Level1.png");
+            inputStream = new FileInputStream("\\src\\main\\Map\\Level1.png");
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -121,12 +121,6 @@ public class Bomberman extends Application {
     /** Gameplay, character movement and enemies behaviour. */
     public void update() {
         movingObjects.forEach(GameObject::update);
-        if (bomb.getTimer() == 0) {
-            for (int i = 0; i < 4; i++) {
-
-            }
-        }
-
     }
 
     public void render() {

@@ -2,7 +2,7 @@ package GameObject;
 
 import javafx.scene.image.Image;
 import javafx.util.Pair;
-
+import Main.Bomberman;
 import java.util.Stack;
 
 public class Enemy5 extends Enemy {
@@ -11,7 +11,7 @@ public class Enemy5 extends Enemy {
     }
 
     public void update() {
-        Stack<Pair<Integer, Integer>> moveList = new Stack<>();
+        Stack<Pair<Integer, Integer> > moveList = new Stack<>();
 
         int[] addX = {1, -1, 0, 0};
         int[] addY = {0, 0, -1, 1};
@@ -19,7 +19,7 @@ public class Enemy5 extends Enemy {
         moveList.push(new Pair<>(x, y));
 
         int[][] timer = new int[26][16];
-        Pair<Integer, Integer>[][] preMove = new Pair<>[Bomberman.WIDTH + 1][Bomberman.HEIGHT + 1];
+        Pair<Integer, Integer>[][] preMove = new Pair[Bomberman.WIDTH + 1][Bomberman.HEIGHT + 1];
 
         for (int i = 1; i <= Bomberman.WIDTH; i++)
             for (int j = 1; j <= Bomberman.HEIGHT; j++)
@@ -33,8 +33,8 @@ public class Enemy5 extends Enemy {
         int newX = 0, newY = 0;
         int curX = 0, curY = 0;
 
-        while (moveList.peek().getKey() != player.getX()
-            && moveList.peek().getValue() != player.getY()) {
+        while (moveList.peek().getKey() != Bomberman.player.getX()
+            && moveList.peek().getValue() != Bomberman.player.getY()) {
 
             curX = moveList.peek().getKey();
             curY = moveList.peek().getValue();
@@ -45,7 +45,7 @@ public class Enemy5 extends Enemy {
 
                 if (newX <= Bomberman.WIDTH && newX >= 1
                         && newY <= Bomberman.HEIGHT && newY >= 1
-                        && map[newX][newY] == 2) {
+                        && Bomberman.map[newX][newY] == 2) {
                     if (timer[newX][newY] > timer[curX][curY] + 1) {
                         moveList.push(new Pair<> (newX, newY));
                         timer[newX][newY] = timer[curX][curY] + 1;

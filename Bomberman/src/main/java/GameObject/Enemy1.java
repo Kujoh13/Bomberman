@@ -23,19 +23,19 @@ public class Enemy1 extends Enemy {
         int dif = (add) ? 1 : -1;
 
         if (horizontal) {
-            if ((x + dif <= 0 && x + dif > Bomberman.WIDTH) || (map[x + dif][y] != 2)) {
+            if ((x + dif <= 0 && x + dif > Bomberman.WIDTH) || (Bomberman.map[x + dif][y] != 2)) {
                 dif = -dif;
             }
 
-            if (map[x + dif][y] == 2) {
+            if (Bomberman.map[x + dif][y] == 2) {
                 x += dif;
             }
         } else {
-            if ((y + dif <= 0 && y + dif > Bomberman.HEIGHT) || (map[x][y + dif] != 2)) {
+            if ((y + dif <= 0 && y + dif > Bomberman.HEIGHT) || (Bomberman.map[x][y + dif] != 2)) {
                 dif = -dif;
             }
 
-            if (map[x][y + dif] == 2) {
+            if (Bomberman.map[x][y + dif] == 2) {
                 y += dif;
             }
         }
