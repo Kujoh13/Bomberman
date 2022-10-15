@@ -1,3 +1,5 @@
+package Main;
+
 import GameObject.*;
 import GameObject.Player;
 import Graphics.Sprite;
@@ -16,7 +18,6 @@ import javafx.stage.Stage;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,15 +30,15 @@ public class Bomberman extends Application {
     private Canvas canvas;
     private List<GameObject> movingObjects = new ArrayList<>();
     private List<GameObject> stillObjects = new ArrayList<>();
-    private Player player;
+    public static Player player;
     private Bomb bomb;
     private static int[] row = {0, 1, 0, -1};
     private static int[] col = {1, 0, -1, 0};
-    private int map[][];
+    public static int map[][];
 
     @Override
     public void start(Stage stage) {
-        canvas = new Canvas(WIDTH * Sprite.SIZE, HEIGHT * Sprite.SIZE);
+        canvas = new Canvas(WIDTH * Sprite.SCALED_SIZE, HEIGHT * Sprite.SCALED_SIZE);
         gc = canvas.getGraphicsContext2D();
 
         Group root = new Group();
@@ -77,7 +78,7 @@ public class Bomberman extends Application {
         stage.show();
 
         createMap();
-        player = new Player(1, 1, Sprite.player.getFxImage());
+        player = new Player(1, 1, Sprite.player_down.getFxImage());
         bomb = new Bomb(1, 1, Sprite.bomb.getFxImage());
 
     }
@@ -106,7 +107,7 @@ public class Bomberman extends Application {
                     object = new Wall(i, j, Sprite.wall.getFxImage());
                 } else if (color.getRed() == 0 && color.getGreen() == 255 && color.getBlue() == 0) {
                     map[i][j] = 1;
-                    object = new Grass(i, j, Sprite.breakableWall.getFxImage());
+                    object = new Grass(i, j, Sprite.brick.getFxImage());
                 } else {
                     map[i][j] = 2;
                     object = new Grass(i, j, Sprite.grass.getFxImage());
