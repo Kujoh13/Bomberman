@@ -69,8 +69,8 @@ public class Bomberman extends Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                update();
                 render();
+                update();
             }
         };
         timer.start();
@@ -80,7 +80,7 @@ public class Bomberman extends Application {
         createMap();
         player = new Player(1, 1, Sprite.player_down.getFxImage());
         bomb = new Bomb(1, 1, Sprite.bomb.getFxImage());
-
+        movingObjects.add(player);
     }
 
     public void createMap() {
@@ -89,7 +89,7 @@ public class Bomberman extends Application {
         // Read map details from pixels from a .png file
         FileInputStream inputStream = null;
         try {
-            inputStream = new FileInputStream("\\Map\\Level1.png");
+            inputStream = new FileInputStream("E:\\Uni\\HK1 - 2nd year\\INT2204 22 - Lap trinh huong doi tuong\\Bomberman\\Bomberman\\src\\main\\java\\Map\\Level1.png");
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -99,18 +99,18 @@ public class Bomberman extends Application {
         for (int i = 0; i < HEIGHT; i++) {
             for (int j = 0; j < WIDTH; j++) {
                 //Retrieving the color of the pixel of the loaded image
-                Color color = pixelReader.getColor(i, j);
+                Color color = pixelReader.getColor(j, i);
                 GameObject object;
                 if (color.getRed() == 0 && color.getGreen() == 0 && color.getBlue() == 0) {
                     //is a wall
                     map[i][j] = 0;
-                    object = new Wall(i, j, Sprite.wall.getFxImage());
+                    object = new Wall(j, i, Sprite.wall.getFxImage());
                 } else if (color.getRed() == 0 && color.getGreen() == 255 && color.getBlue() == 0) {
                     map[i][j] = 1;
-                    object = new Grass(i, j, Sprite.brick.getFxImage());
+                    object = new BreakableWall(j, i, Sprite.brick.getFxImage());
                 } else {
                     map[i][j] = 2;
-                    object = new Grass(i, j, Sprite.grass.getFxImage());
+                    object = new Grass(j, i, Sprite.grass.getFxImage());
                 }
 
                 stillObjects.add(object);
@@ -121,12 +121,6 @@ public class Bomberman extends Application {
     /** Gameplay, character movement and enemies behaviour. */
     public void update() {
         movingObjects.forEach(GameObject::update);
-        if (bomb.getTimer() == 0) {
-            for (int i = 0; i < 4; i++) {
-
-            }
-        }
-
     }
 
     public void render() {

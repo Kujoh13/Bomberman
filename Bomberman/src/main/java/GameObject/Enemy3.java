@@ -24,7 +24,7 @@ public class Enemy3 extends Enemy {
 
         if (newX <= Bomberman.WIDTH && newX >= 1
                 && newY <= Bomberman.HEIGHT && newY >= 1
-                && map[newX][newY] == 2) {
+                && Bomberman.map[newX][newY] == 2) {
             x = newX;
             y = newY;
         }
