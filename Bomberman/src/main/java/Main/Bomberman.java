@@ -89,7 +89,7 @@ public class Bomberman extends Application {
         // Read map details from pixels from a .png file
         FileInputStream inputStream = null;
         try {
-            inputStream = new FileInputStream("E:\\Uni\\HK1 - 2nd year\\INT2204 22 - Lap trinh huong doi tuong\\Bomberman\\Bomberman\\src\\main\\java\\Map\\Level1.png");
+            inputStream = new FileInputStream("src\\main\\java\\Map\\Level1.png");
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
