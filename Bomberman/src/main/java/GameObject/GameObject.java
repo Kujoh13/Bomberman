@@ -31,6 +31,14 @@ public abstract class GameObject {
         return true;
     }
 
+    public boolean collision(int ox, int oy) {
+        if (ox >= x + Sprite.SCALED_SIZE || x >= ox + Sprite.SCALED_SIZE
+                || oy >= y + Sprite.SCALED_SIZE || y >= oy + Sprite.SCALED_SIZE) {
+            return false;
+        }
+        return true;
+    }
+
     public abstract void update();
 
     public int getX() {
