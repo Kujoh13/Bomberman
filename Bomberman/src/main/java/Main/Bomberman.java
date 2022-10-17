@@ -12,6 +12,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -32,7 +33,7 @@ public class Bomberman extends Application {
     public static List<GameObject> movingObjects = new ArrayList<>();
     public static List<GameObject> stillObjects = new ArrayList<>();
     public static Player player;
-    public static Bomb[] bombs;
+    public static List<Bomb> bombs = new ArrayList<>();
     private static int[] row = {0, 1, 0, -1};
     private static int[] col = {1, 0, -1, 0};
     public static int map[][];
@@ -50,42 +51,37 @@ public class Bomberman extends Application {
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                switch (event.getCode()) {
-                    case W:
-                        player.moveUp(0);
-                        break;
-                    case A:
-                        player.moveLeft(0);
-                        break;
-                    case S:
-                        player.moveDown(0);
-                        break;
-                    case D:
-                        player.moveRight(0);
-                        break;
-                    default:
-                        break;
+                if (event.getCode() == KeyCode.W) {
+                    player.moveUp();
+                }
+                if (event.getCode() == KeyCode.A) {
+                    player.moveLeft();
+                }
+                if (event.getCode() == KeyCode.S) {
+                    player.moveDown();
+                }
+                if (event.getCode() == KeyCode.D) {
+                    player.moveRight();
+                }
+                if (event.getCode() == KeyCode.SPACE) {
+                    Bomb.placeBomb();
                 }
             }
         });
         scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                switch (event.getCode()) {
-                    case W:
-                        player.moveUp(1);
-                        break;
-                    case A:
-                        player.moveLeft(1);
-                        break;
-                    case S:
-                        player.moveDown(1);
-                        break;
-                    case D:
-                        player.moveRight(1);
-                        break;
-                    default:
-                        break;
+                if (event.getCode() == KeyCode.W) {
+                    player.moveUp();
+                }
+                if (event.getCode() == KeyCode.A) {
+                    player.moveLeft();
+                }
+                if (event.getCode() == KeyCode.S) {
+                    player.moveDown();
+                }
+                if (event.getCode() == KeyCode.D) {
+                    player.moveRight();
                 }
             }
         });
@@ -103,7 +99,6 @@ public class Bomberman extends Application {
         createMap();
         player = new Player(1, 1, Sprite.player_down.getFxImage());
         movingObjects.add(player);
-        bombs = new Bomb[0];
     }
 
     public void createMap() {
@@ -147,14 +142,14 @@ public class Bomberman extends Application {
         movingObjects.forEach(GameObject::update);
 
         //Bomb explosion handling
-        for (int i = 0; i < bombs.length; i++) {
-            bombs[i].update();
-            if (bombs[i].getTimer() == 0) {
+        for (Bomb bomb: bombs) {
+            bomb.update();
+            if (bomb.getTimer() == 0) {
                 for (int j = 0; j < col.length; j++) {
-                    int x = bombs[i].getX();
-                    int y = bombs[i].getY();
+                    int x = bomb.getX();
+                    int y = bomb.getY();
                     int curRadius = 1;
-                    while (curRadius <= bombs[i].getRadius()) {
+                    while (curRadius <= bomb.getRadius()) {
                         x += col[j] * Sprite.SCALED_SIZE;
                         y += row[j] * Sprite.SCALED_SIZE;
                         boolean metWall = false;
@@ -175,6 +170,7 @@ public class Bomberman extends Application {
                         curRadius++;
                     }
                 }
+                bombs.remove(bomb);
             }
         }
 
@@ -186,7 +182,7 @@ public class Bomberman extends Application {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         stillObjects.forEach(g -> g.render(gc));
         movingObjects.forEach(g -> g.render(gc));
-
+        bombs.forEach(g -> g.render(gc));
     }
 
 }
