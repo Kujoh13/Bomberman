@@ -21,67 +21,27 @@ public class Player extends GameObject {
 
     }
 
-    public void moveUp(int id) {
-        if (id == 0) {
-            upP = true;
-            if (!checkCollision(0, -velocity)) {
-                y -= velocity;
-            }
-        } else {
-            upP = false;
-            if (downP) {
-                if (checkCollision(0, velocity)) {
-                    y += velocity;
-                }
-            }
+    public void moveUp() {
+        if (!checkCollision(0, -velocity)) {
+            y -= velocity;
         }
     }
 
-    public void moveDown(int id) {
-        if (id == 0) {
-            downP = true;
-            if (!checkCollision(0, velocity)) {
-                y += velocity;
-            }
-        } else {
-            downP = false;
-            if (upP) {
-                if (checkCollision(0, -velocity)) {
-                    y -= velocity;
-                }
-            }
+    public void moveDown() {
+        if (!checkCollision(0, velocity)) {
+            y += velocity;
         }
     }
 
-    public void moveLeft(int id) {
-        if (id == 0) {
-            leftP = true;
-            if (!checkCollision(-velocity, 0)) {
-                x -= velocity;
-            }
-        } else {
-            leftP = false;
-            if (rightP) {
-                if (checkCollision(velocity, 0)) {
-                    x += velocity;
-                }
-            }
+    public void moveLeft() {
+        if (!checkCollision(-velocity, 0)) {
+            x -= velocity;
         }
     }
 
-    public void moveRight(int id) {
-        if (id == 0) {
-            rightP = true;
-            if (!checkCollision(velocity, 0)) {
-                x += velocity;
-            }
-        } else {
-            rightP = false;
-            if (leftP) {
-                if (checkCollision(-velocity, 0)) {
-                    x -= velocity;
-                }
-            }
+    public void moveRight() {
+        if (!checkCollision(velocity, 0)) {
+            x += velocity;
         }
     }
 
