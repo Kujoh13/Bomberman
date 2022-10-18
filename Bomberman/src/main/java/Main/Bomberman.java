@@ -154,11 +154,14 @@ public class Bomberman extends Application {
                         y += row[j] * Sprite.SCALED_SIZE;
                         boolean metWall = false;
                         for(GameObject o: stillObjects) {
-                            if (o instanceof Enemy) {
-                                stillObjects.remove(o);
-                            } else if (o instanceof Wall || o instanceof BreakableWall) {
+                            if ((o instanceof Wall || o instanceof BreakableWall)
+                                        && o.getY() == y && o.getX() == x){
                                 metWall = true;
+                                System.out.println("removed");
                                 if (o instanceof BreakableWall) {
+                                    System.out.println("removed");
+                                    stillObjects.add(new Grass(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, Sprite.grass.getFxImage()));
+                                    map[y / Sprite.SCALED_SIZE][x / Sprite.SCALED_SIZE] = 2;
                                     stillObjects.remove(o);
                                 }
                                 break;
@@ -166,6 +169,11 @@ public class Bomberman extends Application {
                         }
                         if(metWall) {
                             break;
+                        }
+                        for(GameObject o: movingObjects) {
+                            if (o instanceof Enemy) {
+                                movingObjects.remove(o);
+                            }
                         }
                         curRadius++;
                     }
