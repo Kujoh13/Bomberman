@@ -6,7 +6,7 @@ import javafx.scene.image.Image;
 
 public class Bomb extends GameObject {
     private int radius = 1;
-    private int timer = 90;
+    private int timer = 150;
     public static int numberOfBombs = 1;
     public Bomb(int x, int y, Image img) {
         super(x, y, img);
