@@ -4,6 +4,7 @@ import GameObject.*;
 import GameObject.MovingObjects.*;
 import GameObject.NonMovingObjects.*;
 import Graphics.Sprite;
+import Sounds.Audio;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -71,16 +72,16 @@ public class Bomberman extends Application {
             @Override
             public void handle(KeyEvent event) {
                 if (event.getCode() == KeyCode.W) {
-                    player.moveUp();
+                   // player.moveUp();
                 }
                 if (event.getCode() == KeyCode.A) {
-                    player.moveLeft();
+                   // player.moveLeft();
                 }
                 if (event.getCode() == KeyCode.S) {
-                    player.moveDown();
+                   // player.moveDown();
                 }
                 if (event.getCode() == KeyCode.D) {
-                    player.moveRight();
+                  //  player.moveRight();
                 }
             }
         });
