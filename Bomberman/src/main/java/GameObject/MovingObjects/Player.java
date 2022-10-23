@@ -1,8 +1,10 @@
-package GameObject;
+package GameObject.MovingObjects;
 
+import GameObject.GameObject;
+import GameObject.NonMovingObjects.BreakableWall;
+import GameObject.NonMovingObjects.Wall;
 import Main.Bomberman;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyEvent;
 
 public class Player extends GameObject {
     public static int velocity = 4;

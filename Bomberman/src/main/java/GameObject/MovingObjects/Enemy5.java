@@ -1,4 +1,4 @@
-package GameObject;
+package GameObject.MovingObjects;
 
 import javafx.scene.image.Image;
 import javafx.util.Pair;
@@ -21,8 +21,8 @@ public class Enemy5 extends Enemy {
         int[][] timer = new int[26][16];
         Pair<Integer, Integer>[][] preMove = new Pair[Bomberman.WIDTH + 1][Bomberman.HEIGHT + 1];
 
-        for (int i = 1; i <= Bomberman.WIDTH; i++)
-            for (int j = 1; j <= Bomberman.HEIGHT; j++)
+        for (int i = 0; i < Bomberman.WIDTH; i++)
+            for (int j = 0; j < Bomberman.HEIGHT; j++)
                 timer[i][j] = Bomberman.WIDTH * Bomberman.HEIGHT;
 
         /** To set the current position as default. */
@@ -43,8 +43,8 @@ public class Enemy5 extends Enemy {
                 newX = curX + addX[i];
                 newY = curY + addY[i];
 
-                if (newX <= Bomberman.WIDTH && newX >= 1
-                        && newY <= Bomberman.HEIGHT && newY >= 1
+                if (newX < Bomberman.WIDTH && newX >= 0
+                        && newY < Bomberman.HEIGHT && newY >= 0
                         && Bomberman.map[newX][newY] == 2) {
                     if (timer[newX][newY] > timer[curX][curY] + 1) {
                         moveList.push(new Pair<> (newX, newY));

@@ -1,5 +1,6 @@
-package GameObject;
+package GameObject.MovingObjects;
 
+import GameObject.GameObject;
 import javafx.scene.image.Image;
 
 public class Enemy extends GameObject {
