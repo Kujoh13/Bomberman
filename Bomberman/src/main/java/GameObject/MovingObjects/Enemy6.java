@@ -5,8 +5,8 @@ import javafx.util.Pair;
 import Main.Bomberman;
 import java.util.Stack;
 
-public class Enemy5 extends Enemy {
-    public Enemy5(int x, int y, Image img) {
+public class Enemy6 extends Enemy {
+    public Enemy6(int x, int y, Image img) {
         super(x, y, img);
     }
 
@@ -28,13 +28,13 @@ public class Enemy5 extends Enemy {
         /** To set the current position as default. */
         timer[x][y] = 0;
         preMove[x][y] = new Pair<> (0, 0);
-        /**  */
+        /** --------------------------------------- */
 
         int newX = 0, newY = 0;
         int curX = 0, curY = 0;
 
         while (moveList.peek().getKey() != Bomberman.player.getX()
-            && moveList.peek().getValue() != Bomberman.player.getY()) {
+                && moveList.peek().getValue() != Bomberman.player.getY()) {
 
             curX = moveList.peek().getKey();
             curY = moveList.peek().getValue();
@@ -44,8 +44,7 @@ public class Enemy5 extends Enemy {
                 newY = curY + addY[i];
 
                 if (newX < Bomberman.WIDTH && newX >= 0
-                        && newY < Bomberman.HEIGHT && newY >= 0
-                        && Bomberman.map[newX][newY] == 2) {
+                        && newY < Bomberman.HEIGHT && newY >= 0) {
                     if (timer[newX][newY] > timer[curX][curY] + 1) {
                         moveList.push(new Pair<> (newX, newY));
                         timer[newX][newY] = timer[curX][curY] + 1;

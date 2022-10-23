@@ -1,12 +1,8 @@
 package Main;
 
 import GameObject.*;
-import GameObject.MovingObjects.Enemy;
-import GameObject.MovingObjects.Player;
-import GameObject.NonMovingObjects.Bomb;
-import GameObject.NonMovingObjects.BreakableWall;
-import GameObject.NonMovingObjects.Grass;
-import GameObject.NonMovingObjects.Wall;
+import GameObject.MovingObjects.*;
+import GameObject.NonMovingObjects.*;
 import Graphics.Sprite;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -26,7 +22,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class Bomberman extends Application {
 
