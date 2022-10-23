@@ -1,7 +1,8 @@
 package Main;
 
 import GameObject.*;
-import GameObject.Player;
+import GameObject.MovingObjects.*;
+import GameObject.NonMovingObjects.*;
 import Graphics.Sprite;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -16,13 +17,11 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import org.w3c.dom.events.EventException;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class Bomberman extends Application {
 

@@ -1,5 +1,6 @@
-package GameObject;
+package GameObject.MovingObjects;
 
+import GameObject.MovingObjects.Enemy;
 import Main.Bomberman;
 import javafx.scene.image.Image;
 
@@ -20,8 +21,8 @@ public class Enemy4 extends Enemy {
         int newX = x + ((addX) ? 1 : -1);
         int newY = x + ((addY) ? 1 : -1);
 
-        if (newX <= Bomberman.WIDTH && newX >= 1
-                && newY <= Bomberman.HEIGHT && newY >= 1) {
+        if (newX < Bomberman.WIDTH && newX >= 0
+                && newY < Bomberman.HEIGHT && newY >= 0) {
             x = newX;
             y = newY;
         }

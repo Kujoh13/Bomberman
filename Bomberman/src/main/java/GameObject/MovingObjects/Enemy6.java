@@ -1,12 +1,12 @@
-package GameObject;
+package GameObject.MovingObjects;
 
 import javafx.scene.image.Image;
 import javafx.util.Pair;
 import Main.Bomberman;
 import java.util.Stack;
 
-public class Enemy5 extends Enemy {
-    public Enemy5(int x, int y, Image img) {
+public class Enemy6 extends Enemy {
+    public Enemy6(int x, int y, Image img) {
         super(x, y, img);
     }
 
@@ -18,23 +18,23 @@ public class Enemy5 extends Enemy {
 
         moveList.push(new Pair<>(x, y));
 
-        int[][] timer = new int[26][16];
-        Pair<Integer, Integer>[][] preMove = new Pair[Bomberman.WIDTH + 1][Bomberman.HEIGHT + 1];
+        int[][] timer = new int[25][15];
+        Pair<Integer, Integer>[][] preMove = new Pair[Bomberman.WIDTH][Bomberman.HEIGHT];
 
-        for (int i = 1; i <= Bomberman.WIDTH; i++)
-            for (int j = 1; j <= Bomberman.HEIGHT; j++)
+        for (int i = 0; i < Bomberman.WIDTH; i++)
+            for (int j = 0; j < Bomberman.HEIGHT; j++)
                 timer[i][j] = Bomberman.WIDTH * Bomberman.HEIGHT;
 
         /** To set the current position as default. */
         timer[x][y] = 0;
         preMove[x][y] = new Pair<> (0, 0);
-        /**  */
+        /** --------------------------------------- */
 
         int newX = 0, newY = 0;
         int curX = 0, curY = 0;
 
         while (moveList.peek().getKey() != Bomberman.player.getX()
-            && moveList.peek().getValue() != Bomberman.player.getY()) {
+                && moveList.peek().getValue() != Bomberman.player.getY()) {
 
             curX = moveList.peek().getKey();
             curY = moveList.peek().getValue();
@@ -43,9 +43,8 @@ public class Enemy5 extends Enemy {
                 newX = curX + addX[i];
                 newY = curY + addY[i];
 
-                if (newX <= Bomberman.WIDTH && newX >= 1
-                        && newY <= Bomberman.HEIGHT && newY >= 1
-                        && Bomberman.map[newX][newY] == 2) {
+                if (newX < Bomberman.WIDTH && newX >= 0
+                        && newY < Bomberman.HEIGHT && newY >= 0) {
                     if (timer[newX][newY] > timer[curX][curY] + 1) {
                         moveList.push(new Pair<> (newX, newY));
                         timer[newX][newY] = timer[curX][curY] + 1;

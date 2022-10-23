@@ -1,5 +1,7 @@
-package GameObject;
+package GameObject.NonMovingObjects;
 
+import GameObject.GameObject;
+import GameObject.MovingObjects.Player;
 import Main.Bomberman;
 import javafx.scene.image.Image;
 
