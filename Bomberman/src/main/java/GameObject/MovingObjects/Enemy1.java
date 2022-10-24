@@ -1,6 +1,6 @@
 package GameObject.MovingObjects;
 
-import GameObject.MovingObjects.Enemy;
+import GameObject.GameObject;
 import Main.Bomberman;
 
 import javafx.scene.image.Image;
@@ -23,21 +23,9 @@ public class Enemy1 extends Enemy {
     public void update() {
         int dif = (add) ? 1 : -1;
 
-        if (horizontal) {
-            if ((x + dif < 0 && x + dif >= Bomberman.WIDTH) || (Bomberman.map[x + dif][y] != 2)) {
-                dif = -dif;
-            }
-
-            if ((x + dif >= 0 && x + dif < Bomberman.WIDTH) && Bomberman.map[x + dif][y] == 2) {
-                x += dif;
-            }
-        } else {
-            if ((y + dif < 0 && y + dif >= Bomberman.HEIGHT) || (Bomberman.map[x][y + dif] != 2)) {
-                dif = -dif;
-            }
-
-            if ((y + dif >= 0 && y + dif < Bomberman.HEIGHT) && Bomberman.map[x][y + dif] == 2) {
-                y += dif;
+        for (GameObject o : Bomberman.stillObjects) {
+            if (!collision(o)) {
+                x += dif * velocity;
             }
         }
     }
