@@ -7,7 +7,7 @@ import Main.Bomberman;
 import javafx.scene.image.Image;
 
 public class Player extends GameObject {
-    public static int velocity = 4;
+    public static int velocity = 6;
     private boolean leftP = false;
     private boolean rightP = false;
     private boolean upP = false;
