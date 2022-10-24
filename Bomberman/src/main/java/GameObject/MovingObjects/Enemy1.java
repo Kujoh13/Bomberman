@@ -1,6 +1,5 @@
 package GameObject.MovingObjects;
 
-import GameObject.MovingObjects.Enemy;
 import Main.Bomberman;
 
 import javafx.scene.image.Image;
