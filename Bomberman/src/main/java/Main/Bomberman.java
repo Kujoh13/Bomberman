@@ -96,8 +96,10 @@ public class Bomberman extends Application {
         stage.setScene(scene);
         stage.show();
 
+        Audio.playMusic(Audio.bgm);
         createMap();
         player = new Player(1, 1, Sprite.player_down.getFxImage());
+        //movingObjects.add(new Enemy1(7, 1, Sprite.balloon_dead.getFxImage()));
         movingObjects.add(player);
     }
 
@@ -145,6 +147,7 @@ public class Bomberman extends Application {
         for (Bomb bomb: bombs) {
             bomb.update();
             if (bomb.getTimer() == 0) {
+                Audio.playEffect(Audio.explosion);
                 for (int j = 0; j < col.length; j++) {
                     int x = bomb.getX();
                     int y = bomb.getY();
@@ -173,6 +176,7 @@ public class Bomberman extends Application {
                         for(GameObject o: movingObjects) {
                             if (o instanceof Enemy) {
                                 movingObjects.remove(o);
+                                Audio.playEffect(Audio.enemy_die);
                             }
                         }
                         curRadius++;

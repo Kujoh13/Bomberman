@@ -2,19 +2,56 @@ package Sounds;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import java.io.File;
 
 public class Audio {
-    public static MediaPlayer background_music = new MediaPlayer(new Media("src//main//resources//audio//bgm_1.wav"));
-    public static MediaPlayer click = new MediaPlayer(new Media("src//main//resources//audio//click.wav"));
-    public static MediaPlayer enemy_die = new MediaPlayer(new Media("src//main//resources//audio//enemy_die.wav"));
-    public static MediaPlayer collect_item = new MediaPlayer(new Media("src//main//resources//audio//collect_item.wav"));
-    public static MediaPlayer explosion = new MediaPlayer(new Media("src//main//resources//audio//explosion.wav"));
-    public static MediaPlayer lose = new MediaPlayer(new Media("src//main//resources//audio//lose.wav"));
-    public static MediaPlayer win = new MediaPlayer(new Media("src//main//resources//audio//win.wav"));
-    public static MediaPlayer portal = new MediaPlayer(new Media("src//main//resources//audio//portal.wav"));
+    private static AudioInputStream audioInputStream;
+    private static Clip clip;
+    public static String bgm = "src//main//resources//audio//bgm_1.wav";
+    public static String click = "src//main//resources//audio//click.wav";
+    public static String collect_item = "src//main//resources//audio//collect_item.wav";
+    public static String enemy_die = "src//main//resources//audio//enemy_die.wav";
+    public static String explosion = "src//main//resources//audio//explosion.wav";
+    public static String lose = "src//main//resources//audio//lose.wav";
+    public static String win = "src//main//resources//audio//win.wav";
+    public static String portal = "src//main//resources//audio//portal.wav";
+    public static String choose_level = "src//main//resources//audio//choose_level.wav";
 
-    private Media media(String fileName) {
-        return new Media(new File(fileName).toURI().toString());
+    public static void playEffect(String fileName) {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(fileName).getAbsoluteFile());
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch(Exception e) {
+            System.out.println("Error playing sound effect");
+            e.printStackTrace();
+        }
+    }
+
+    public static void playMusic(String fileName) {
+        try {
+            audioInputStream = AudioSystem.getAudioInputStream(new File(fileName).getAbsoluteFile());
+            clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+        } catch(Exception e) {
+            System.out.println("Error playing music");
+            e.printStackTrace();
+        }
+    }
+
+    public static void stopMusic() {
+        try {
+            clip.stop();
+        } catch (Exception e) {
+            System.out.println("Error stopping music");
+            e.printStackTrace();
+        }
     }
 }
