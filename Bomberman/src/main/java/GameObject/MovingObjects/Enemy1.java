@@ -28,7 +28,7 @@ public class Enemy1 extends Enemy {
                 dif = -dif;
             }
 
-            if (Bomberman.map[x + dif][y] == 2) {
+            if ((x + dif >= 0 && x + dif < Bomberman.WIDTH) && Bomberman.map[x + dif][y] == 2) {
                 x += dif;
             }
         } else {
@@ -36,7 +36,7 @@ public class Enemy1 extends Enemy {
                 dif = -dif;
             }
 
-            if (Bomberman.map[x][y + dif] == 2) {
+            if ((y + dif >= 0 && y + dif < Bomberman.HEIGHT) && Bomberman.map[x][y + dif] == 2) {
                 y += dif;
             }
         }
