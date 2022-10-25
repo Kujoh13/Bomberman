@@ -20,6 +20,8 @@ public class Audio {
     public static String win = "src//main//resources//audio//win.wav";
     public static String portal = "src//main//resources//audio//portal.wav";
     public static String choose_level = "src//main//resources//audio//choose_level.wav";
+    public static String bomb_fuse = "src//main//resources//audio//bomb_fuse.wav";
+    public static String bomb_countdown = "src//main//resources//audio//bomb_countdown.wav";
 
     public static void playEffect(String fileName) {
         try {
