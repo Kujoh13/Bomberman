@@ -55,7 +55,7 @@ class SpeedUp extends Item {
     @Override
     public void update() {
         if (PlayerPickUp()) {
-            Player.velocity++;
+            Player.player_speed *= 2;
         }
     }
 }

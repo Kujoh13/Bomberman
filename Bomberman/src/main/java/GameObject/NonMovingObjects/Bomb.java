@@ -12,7 +12,7 @@ import java.util.List;
 
 public class Bomb extends GameObject {
     public static int radius = 1;
-    private int timer = 300;
+    private int timer = 250;
     public static int numberOfBombs = 1;
     private static int[] row = {0, 1, 0, -1};
     private static int[] col = {1, 0, -1, 0};
