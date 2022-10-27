@@ -13,7 +13,7 @@ public class Enemy1 extends Enemy {
     /** To check if the enemy goes horizontally or vertically. */
     private final boolean horizontal = random.nextBoolean();
     /** To find out the direction the enemy will start with. */
-    private final boolean add = random.nextBoolean();
+    private int dif = (random.nextBoolean()) ? 1 : -1;
 
     public Enemy1(int x, int y, Image img) {
         super(x, y, img);
@@ -21,11 +21,20 @@ public class Enemy1 extends Enemy {
 
     @Override
     public void update() {
-        int dif = (add) ? 1 : -1;
-
+        boolean collide = false;
         for (GameObject o : Bomberman.stillObjects) {
-            if (!collision(o)) {
+            if (collision(o)) {
+                collide = true;
+            }
+        }
+
+        if (collide) {
+            dif = -dif;
+        } else {
+            if (horizontal) {
                 x += dif * velocity;
+            } else {
+                y += dif * velocity;
             }
         }
     }
