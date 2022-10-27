@@ -70,8 +70,9 @@ public class Bomberman extends Application {
                     player.setVelX(Player.player_speed);
                 }
                 if (event.getCode() == KeyCode.SPACE) {
-                    Bomb.placeBomb();
-                    Audio.playEffect(Audio.bomb_fuse);
+                    if (Bomb.placeBomb()) {
+                        Audio.playEffect(Audio.bomb_fuse);
+                    }
                 }
             }
         });
@@ -128,6 +129,7 @@ public class Bomberman extends Application {
         Audio.playMusic(Audio.bgm);
         createMap();
         player = new Player(1, 1, Sprite.player_down.getFxImage());
+        movingObjects.add(new Enemy1(23, 13, Sprite.balloon_dead.getFxImage()));
         movingObjects.add(player);
     }
 

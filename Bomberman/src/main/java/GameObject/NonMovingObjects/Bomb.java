@@ -98,9 +98,9 @@ public class Bomb extends GameObject {
         }
     }
 
-    public static void placeBomb() {
+    public static boolean placeBomb() {
         if (bombs.size() == numberOfBombs) {
-            return;
+            return false;
         }
         int x = Bomberman.player.getX();
         int y = Bomberman.player.getY();
@@ -120,6 +120,7 @@ public class Bomb extends GameObject {
             }
         }
         bombs.add(new Bomb(finalX, finalY,Sprite.bomb.getFxImage()));
+        return true;
     }
 
     public static int getRadius() {

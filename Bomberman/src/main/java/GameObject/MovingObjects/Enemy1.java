@@ -1,6 +1,8 @@
 package GameObject.MovingObjects;
 
 import GameObject.GameObject;
+import GameObject.NonMovingObjects.BreakableWall;
+import GameObject.NonMovingObjects.Wall;
 import Main.Bomberman;
 
 import javafx.scene.image.Image;
@@ -23,7 +25,10 @@ public class Enemy1 extends Enemy {
     public void update() {
         boolean collide = false;
         for (GameObject o : Bomberman.stillObjects) {
-            if (collision(o)) {
+            int newX = horizontal ? x + dif * velocity : x;
+            int newY = horizontal ? y : y + dif * velocity;
+            if ((o instanceof Wall || o instanceof BreakableWall)
+                 && o.collision(newX, newY)) {
                 collide = true;
             }
         }
