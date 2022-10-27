@@ -1,24 +1,105 @@
 package GameObject.NonMovingObjects;
 
 import GameObject.GameObject;
+import GameObject.MovingObjects.Enemy;
 import Graphics.Sprite;
 import Main.Bomberman;
+import Sounds.Audio;
 import javafx.scene.image.Image;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Bomb extends GameObject {
-    private int radius = 1;
-    private int timer = 150;
+    public static int radius = 1;
+    private int timer = 300;
     public static int numberOfBombs = 1;
+    private static int[] row = {0, 1, 0, -1};
+    private static int[] col = {1, 0, -1, 0};
+    public static List<Bomb> bombs = new ArrayList<>();
     public Bomb(int x, int y, Image img) {
         super(x, y, img);
     }
 
     public void update() {
         timer--;
+        if (timer == 0) {
+            Audio.playEffect(Audio.explosion);
+            Bomberman.stillObjects.add(new Explosion(this.x / Sprite.SCALED_SIZE, this.y / Sprite.SCALED_SIZE, Sprite.bomb_exploded.getFxImage()));
+            for (int j = 0; j < col.length; j++) {
+                int x = this.x;
+                int y = this.y;
+                int curRadius = 1;
+                while (curRadius <= radius) {
+                    x += col[j] * Sprite.SCALED_SIZE;
+                    y += row[j] * Sprite.SCALED_SIZE;
+                    boolean metWall = false;
+                    for(GameObject o: Bomberman.stillObjects) {
+                        if ((o instanceof Wall || o instanceof BreakableWall)
+                                && o.getY() == y && o.getX() == x){
+                            metWall = true;
+                            if (o instanceof BreakableWall) {
+                                int curX = x / Sprite.SCALED_SIZE;
+                                int curY = y / Sprite.SCALED_SIZE;
+                                Bomberman.stillObjects.add(new Grass(curX, curY, Sprite.grass.getFxImage()));
+                                Bomberman.map[curY][curX] = 2;
+                                Bomberman.stillObjects.remove(o);
+                                if (Bomberman.items[curY][curX] != -1) {
+                                    GameObject object;
+                                    if (Bomberman.items[curY][curX] == 0) {
+                                        object = new Item(curX, curY, Sprite.portal.getFxImage());
+                                    } else if (Bomberman.items[curY][curX] == 1) {
+                                        object = new Item(curX, curY, Sprite.powerup_bombpass.getFxImage());
+                                    } else if (Bomberman.items[curY][curX] == 2) {
+                                        object = new Item(curX, curY, Sprite.powerup_bombs.getFxImage());
+                                    } else {
+                                        object = new Item(curX, curY, Sprite.powerup_speed.getFxImage());
+                                    }
+                                    Bomberman.stillObjects.add(object);
+                                }
+                            }
+                            break;
+                        }
+                    }
+
+                    if(metWall) {
+                        break;
+                    } else {
+                        if (curRadius < radius) {
+                            if (j % 2 == 0) {
+                                Bomberman.stillObjects.add(new Explosion(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, Sprite.explosion_horizontal.getFxImage()));
+                            } else {
+                                Bomberman.stillObjects.add(new Explosion(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, Sprite.explosion_vertical.getFxImage()));
+                            }
+                        } else {
+                            if (j == 0) {
+                                Bomberman.stillObjects.add(new Explosion(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, Sprite.explosion_horizontal_right_last.getFxImage()));
+                            } else if (j == 1) {
+                                Bomberman.stillObjects.add(new Explosion(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, Sprite.explosion_vertical_down_last.getFxImage()));
+                            } else if (j == 2) {
+                                Bomberman.stillObjects.add(new Explosion(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, Sprite.explosion_horizontal_left_last.getFxImage()));
+                            } else {
+                                Bomberman.stillObjects.add(new Explosion(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, Sprite.explosion_vertical_top_last.getFxImage()));
+                            }
+                        }
+                    }
+                    for(GameObject o: Bomberman.movingObjects) {
+                        if (o instanceof Enemy) {
+                            Bomberman.movingObjects.remove(o);
+                            Audio.playEffect(Audio.enemy_die);
+                        }
+                    }
+                    curRadius++;
+                }
+            }
+            bombs.remove(this);
+        } else if (timer == 70) {
+            Audio.playEffect(Audio.bomb_countdown);
+        }
     }
 
     public static void placeBomb() {
-        if (Bomberman.bombs.size() == numberOfBombs) {
+        if (bombs.size() == numberOfBombs) {
             return;
         }
         int x = Bomberman.player.getX();
@@ -38,15 +119,15 @@ public class Bomb extends GameObject {
                 }
             }
         }
-        Bomberman.bombs.add(new Bomb(finalX, finalY,Sprite.bomb.getFxImage()));
+        bombs.add(new Bomb(finalX, finalY,Sprite.bomb.getFxImage()));
     }
 
-    public int getRadius() {
+    public static int getRadius() {
         return radius;
     }
 
-    public void setRadius(int radius) {
-        this.radius = radius;
+    public static void setRadius(int radius) {
+        Bomb.radius = radius;
     }
 
     public int getTimer() {
@@ -55,5 +136,13 @@ public class Bomb extends GameObject {
 
     public void setTimer(int timer) {
         this.timer = timer;
+    }
+
+    public static int getNumberOfBombs() {
+        return numberOfBombs;
+    }
+
+    public static void setNumberOfBombs(int numberOfBombs) {
+        Bomb.numberOfBombs = numberOfBombs;
     }
 }

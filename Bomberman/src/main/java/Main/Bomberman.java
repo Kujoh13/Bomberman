@@ -12,17 +12,16 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.scene.image.PixelReader;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.paint.Color;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
-import java.io.FileInputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Bomberman extends Application {
 
@@ -33,11 +32,10 @@ public class Bomberman extends Application {
     public static List<GameObject> movingObjects = new ArrayList<>();
     public static List<GameObject> stillObjects = new ArrayList<>();
     public static Player player;
-    public static List<Bomb> bombs = new ArrayList<>();
-    private static int[] row = {0, 1, 0, -1};
-    private static int[] col = {1, 0, -1, 0};
     public static int map[][];
-    public static int buffs[][];
+    public static int items[][];
+    public static Scanner scanner;
+    public static int currentLevel = 1;
 
     @Override
     public void start(Stage stage) {
@@ -65,6 +63,7 @@ public class Bomberman extends Application {
                 }
                 if (event.getCode() == KeyCode.SPACE) {
                     Bomb.placeBomb();
+                    Audio.playEffect(Audio.bomb_fuse);
                 }
             }
         });
@@ -85,6 +84,12 @@ public class Bomberman extends Application {
                 }
             }
         });
+        scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+
+            }
+        });
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
@@ -99,39 +104,58 @@ public class Bomberman extends Application {
         Audio.playMusic(Audio.bgm);
         createMap();
         player = new Player(1, 1, Sprite.player_down.getFxImage());
-        //movingObjects.add(new Enemy1(7, 1, Sprite.balloon_dead.getFxImage()));
         movingObjects.add(player);
     }
 
     public void createMap() {
+        /*
+            map:
+                0: wall
+                1: brick
+                2: grass
+            buffs:
+                0: portal
+                1: increase bomb radius
+                2: increase number of bombs
+                3: increase player speed
+                4: immortality
+                5: teleport
+         */
         map = new int[HEIGHT][WIDTH];
-        buffs = new int[HEIGHT][WIDTH];
-
-        // Read map details from pixels from a .png file
-        FileInputStream inputStream = null;
-        try {
-            inputStream = new FileInputStream("src\\main\\java\\Map\\Level1.png");
+        items = new int[HEIGHT][WIDTH];
+        try{
+            File file = new File("src//main//resources//levels//Level" + currentLevel + ".txt");
+            scanner = new Scanner(file);
         } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
-        Image image = new Image(inputStream);
-        PixelReader pixelReader = image.getPixelReader();
 
         for (int i = 0; i < HEIGHT; i++) {
+            String str = scanner.nextLine();
             for (int j = 0; j < WIDTH; j++) {
-                //Retrieving the color of the pixel of the loaded image
-                Color color = pixelReader.getColor(j, i);
                 GameObject object;
-                if (color.getRed() == 0 && color.getGreen() == 0 && color.getBlue() == 0) {
+                if (str.charAt(j) == '#') {
                     //is a wall
                     map[i][j] = 0;
                     object = new Wall(j, i, Sprite.wall.getFxImage());
-                } else if (color.getRed() == 0 && color.getGreen() == 1 && color.getBlue() == 0) {
-                    map[i][j] = 1;
-                    object = new BreakableWall(j, i, Sprite.brick.getFxImage());
-                } else {
+                    items[i][j] = -1;
+                } else if (str.charAt(j) == '.') {
                     map[i][j] = 2;
                     object = new Grass(j, i, Sprite.grass.getFxImage());
+                    items[i][j] = -1;
+                } else {
+                    map[i][j] = 1;
+                    object = new BreakableWall(j, i, Sprite.brick.getFxImage());
+                    items[i][j] = -1;
+                    if (str.charAt(j) == 'p') {
+                        items[i][j] = 0;
+                    } else if (str.charAt(j) == 'r') {
+                        items[i][j] = 1;
+                    } else if (str.charAt(j) == 'n') {
+                        items[i][j] = 2;
+                    } else if (str.charAt(j) == 's') {
+                        items[i][j] = 3;
+                    }
                 }
 
                 stillObjects.add(object);
@@ -142,48 +166,11 @@ public class Bomberman extends Application {
     /** Gameplay, character movement and enemies behaviour. */
     public void update() {
         movingObjects.forEach(GameObject::update);
+        stillObjects.forEach(GameObject::update);
 
         //Bomb explosion handling
-        for (Bomb bomb: bombs) {
+        for (Bomb bomb: Bomb.bombs) {
             bomb.update();
-            if (bomb.getTimer() == 0) {
-                Audio.playEffect(Audio.explosion);
-                for (int j = 0; j < col.length; j++) {
-                    int x = bomb.getX();
-                    int y = bomb.getY();
-                    int curRadius = 1;
-                    while (curRadius <= bomb.getRadius()) {
-                        x += col[j] * Sprite.SCALED_SIZE;
-                        y += row[j] * Sprite.SCALED_SIZE;
-                        boolean metWall = false;
-                        for(GameObject o: stillObjects) {
-                            if ((o instanceof Wall || o instanceof BreakableWall)
-                                        && o.getY() == y && o.getX() == x){
-                                metWall = true;
-                                System.out.println("removed");
-                                if (o instanceof BreakableWall) {
-                                    System.out.println("removed");
-                                    stillObjects.add(new Grass(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, Sprite.grass.getFxImage()));
-                                    map[y / Sprite.SCALED_SIZE][x / Sprite.SCALED_SIZE] = 2;
-                                    stillObjects.remove(o);
-                                }
-                                break;
-                            }
-                        }
-                        if(metWall) {
-                            break;
-                        }
-                        for(GameObject o: movingObjects) {
-                            if (o instanceof Enemy) {
-                                movingObjects.remove(o);
-                                Audio.playEffect(Audio.enemy_die);
-                            }
-                        }
-                        curRadius++;
-                    }
-                }
-                bombs.remove(bomb);
-            }
         }
 
         //Player collision
@@ -194,7 +181,7 @@ public class Bomberman extends Application {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         stillObjects.forEach(g -> g.render(gc));
         movingObjects.forEach(g -> g.render(gc));
-        bombs.forEach(g -> g.render(gc));
+        Bomb.bombs.forEach(g -> g.render(gc));
     }
 
 }
