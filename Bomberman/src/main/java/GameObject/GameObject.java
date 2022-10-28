@@ -39,6 +39,8 @@ public abstract class GameObject {
         return true;
     }
 
+
+
     public abstract void update();
 
     public int getX() {
