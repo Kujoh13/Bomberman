@@ -3,6 +3,8 @@ package GameObject.MovingObjects;
 import javafx.scene.image.Image;
 import javafx.util.Pair;
 import Main.Bomberman;
+
+import java.util.Queue;
 import java.util.Stack;
 
 public class Enemy5 extends Enemy {
@@ -11,12 +13,12 @@ public class Enemy5 extends Enemy {
     }
 
     public void update() {
-        Stack<Pair<Integer, Integer> > moveList = new Stack<>();
+        Queue<Pair<Integer, Integer> > moveList = null;
 
         int[] addX = {1, -1, 0, 0};
         int[] addY = {0, 0, -1, 1};
 
-        moveList.push(new Pair<>(x, y));
+        moveList.add(new Pair<>(x, y));
 
         int[][] timer = new int[25][15];
         Pair<Integer, Integer>[][] preMove = new Pair[Bomberman.WIDTH][Bomberman.HEIGHT];
@@ -47,7 +49,7 @@ public class Enemy5 extends Enemy {
                         && newY < Bomberman.HEIGHT && newY >= 0
                         && Bomberman.map[newX][newY] == 2) {
                     if (timer[newX][newY] > timer[curX][curY] + 1) {
-                        moveList.push(new Pair<> (newX, newY));
+                        moveList.add(new Pair<> (newX, newY));
                         timer[newX][newY] = timer[curX][curY] + 1;
                         preMove[newX][newY] = new Pair<> (curX, curY);
                     }
