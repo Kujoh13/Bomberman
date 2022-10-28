@@ -3,9 +3,7 @@ package GameObject.MovingObjects;
 import javafx.scene.image.Image;
 import javafx.util.Pair;
 import Main.Bomberman;
-
 import java.util.Queue;
-import java.util.Stack;
 
 public class Enemy5 extends Enemy {
     public Enemy5(int x, int y, Image img) {
