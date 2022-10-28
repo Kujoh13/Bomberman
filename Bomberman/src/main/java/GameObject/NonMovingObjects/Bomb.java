@@ -12,7 +12,7 @@ import java.util.List;
 
 public class Bomb extends GameObject {
     public static int radius = 1;
-    private int timer = 300;
+    private int timer = 250;
     public static int numberOfBombs = 1;
     private static int[] row = {0, 1, 0, -1};
     private static int[] col = {1, 0, -1, 0};
@@ -98,9 +98,9 @@ public class Bomb extends GameObject {
         }
     }
 
-    public static void placeBomb() {
+    public static boolean placeBomb() {
         if (bombs.size() == numberOfBombs) {
-            return;
+            return false;
         }
         int x = Bomberman.player.getX();
         int y = Bomberman.player.getY();
@@ -120,6 +120,7 @@ public class Bomb extends GameObject {
             }
         }
         bombs.add(new Bomb(finalX, finalY,Sprite.bomb.getFxImage()));
+        return true;
     }
 
     public static int getRadius() {

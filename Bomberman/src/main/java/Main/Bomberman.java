@@ -35,6 +35,10 @@ public class Bomberman extends Application {
     public static int map[][];
     public static int items[][];
     public static Scanner scanner;
+    private boolean leftP = false;
+    private boolean rightP = false;
+    private boolean upP = false;
+    private boolean downP = false;
     public static int currentLevel = 1;
 
     @Override
@@ -50,20 +54,25 @@ public class Bomberman extends Application {
             @Override
             public void handle(KeyEvent event) {
                 if (event.getCode() == KeyCode.W) {
-                    player.moveUp();
+                    upP = true;
+                    player.setVelY(-Player.player_speed);
                 }
                 if (event.getCode() == KeyCode.A) {
-                    player.moveLeft();
+                    leftP = true;
+                    player.setVelX(-Player.player_speed);
                 }
                 if (event.getCode() == KeyCode.S) {
-                    player.moveDown();
+                    downP = true;
+                    player.setVelY(Player.player_speed);
                 }
                 if (event.getCode() == KeyCode.D) {
-                    player.moveRight();
+                    rightP = true;
+                    player.setVelX(Player.player_speed);
                 }
                 if (event.getCode() == KeyCode.SPACE) {
-                    Bomb.placeBomb();
-                    Audio.playEffect(Audio.bomb_fuse);
+                    if (Bomb.placeBomb()) {
+                        Audio.playEffect(Audio.bomb_fuse);
+                    }
                 }
             }
         });
@@ -71,16 +80,32 @@ public class Bomberman extends Application {
             @Override
             public void handle(KeyEvent event) {
                 if (event.getCode() == KeyCode.W) {
-                   // player.moveUp();
+                    upP = false;
+                    if (downP) {
+                        player.setVelY(Player.player_speed);
+                    }
+                    else player.setVelY(0);
                 }
                 if (event.getCode() == KeyCode.A) {
-                   // player.moveLeft();
+                    leftP = false;
+                    if (rightP) {
+                        player.setVelX(Player.player_speed);
+                    }
+                    else player.setVelX(0);
                 }
                 if (event.getCode() == KeyCode.S) {
-                   // player.moveDown();
+                    downP = false;
+                    if (upP) {
+                        player.setVelY(-Player.player_speed);
+                    }
+                    else player.setVelY(0);
                 }
                 if (event.getCode() == KeyCode.D) {
-                  //  player.moveRight();
+                    rightP = false;
+                    if (leftP) {
+                        player.setVelX(-Player.player_speed);
+                    }
+                    else player.setVelX(0);
                 }
             }
         });
@@ -104,6 +129,7 @@ public class Bomberman extends Application {
         Audio.playMusic(Audio.bgm);
         createMap();
         player = new Player(1, 1, Sprite.player_down.getFxImage());
+        movingObjects.add(new Enemy1(23, 13, Sprite.balloon_dead.getFxImage()));
         movingObjects.add(player);
     }
 

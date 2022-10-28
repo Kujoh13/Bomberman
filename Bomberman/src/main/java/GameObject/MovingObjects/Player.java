@@ -7,11 +7,9 @@ import Main.Bomberman;
 import javafx.scene.image.Image;
 
 public class Player extends GameObject {
-    public static int velocity = 6;
-    private boolean leftP = false;
-    private boolean rightP = false;
-    private boolean upP = false;
-    private boolean downP = false;
+    public static int player_speed = 6;
+    private int velX = 0;
+    private int velY = 0;
     public Player() {
 
     }
@@ -20,30 +18,9 @@ public class Player extends GameObject {
     }
     @Override
     public void update() {
-
-    }
-
-    public void moveUp() {
-        if (!checkCollision(0, -velocity)) {
-            y -= velocity;
-        }
-    }
-
-    public void moveDown() {
-        if (!checkCollision(0, velocity)) {
-            y += velocity;
-        }
-    }
-
-    public void moveLeft() {
-        if (!checkCollision(-velocity, 0)) {
-            x -= velocity;
-        }
-    }
-
-    public void moveRight() {
-        if (!checkCollision(velocity, 0)) {
-            x += velocity;
+        if (!checkCollision(velX, velY)) {
+            x = x + velX;
+            y = y + velY;
         }
     }
 
@@ -57,5 +34,21 @@ public class Player extends GameObject {
             }
         }
         return false;
+    }
+
+    public int getVelX() {
+        return velX;
+    }
+
+    public void setVelX(int velX) {
+        this.velX = velX;
+    }
+
+    public int getVelY() {
+        return velY;
+    }
+
+    public void setVelY(int velY) {
+        this.velY = velY;
     }
 }
