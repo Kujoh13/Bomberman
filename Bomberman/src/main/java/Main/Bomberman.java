@@ -14,7 +14,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -42,6 +41,8 @@ public class Bomberman extends Application {
     private boolean downP = false;
     public static int currentLevel = 1;
     public static int status = 0;
+    public static int loseTimer;
+    public static int animate = 0;
 
     @Override
     public void start(Stage stage) {
@@ -114,6 +115,7 @@ public class Bomberman extends Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
+                animate++;
                 update();
                 render();
             }
@@ -139,6 +141,7 @@ public class Bomberman extends Application {
                 4: immortality
                 5: teleport
          */
+        status = 0;
         Audio.playMusic(Audio.bgm);
         movingObjects.clear();
         stillObjects.clear();
@@ -147,6 +150,7 @@ public class Bomberman extends Application {
         Bomb.radius = 1;
         map = new int[HEIGHT][WIDTH];
         items = new int[HEIGHT][WIDTH];
+        Player.player_speed = 3;
         try{
             File file = new File("src//main//resources//levels//Level" + currentLevel + ".txt");
             scanner = new Scanner(file);
@@ -191,6 +195,10 @@ public class Bomberman extends Application {
                         items[i][j] = 2;
                     } else if (str.charAt(j) == 's') {
                         items[i][j] = 3;
+                    } else if (str.charAt(j) == 'i') {
+                        items[i][j] = 4;
+                    } else if (str.charAt(j) == 't') {
+                        items[i][j] = 5;
                     }
                 }
 
@@ -203,14 +211,20 @@ public class Bomberman extends Application {
 
     /** Update objects. */
     public void update() {
-        movingObjects.forEach(GameObject::update);
-        stillObjects.forEach(GameObject::update);
-        for (Bomb bomb: Bomb.bombs) {
-            bomb.update();
+        if (status != -1) {
+            System.out.println(Player.player_speed);
+            movingObjects.forEach(GameObject::update);
+            stillObjects.forEach(GameObject::update);
+            for (Bomb bomb : Bomb.bombs) {
+                bomb.update();
+            }
         }
 
         if (status == -1) {
-            reset();
+            loseTimer--;
+            player.setImg(Sprite.movingSprite(Sprite.player_dead1, Sprite.player_dead2, Sprite.player_dead3, animate, 300).getFxImage());
+            if (loseTimer == 0)
+                reset();
         } else if (status == 1) {
             currentLevel++;
             if (currentLevel == numberOfLevels) {
@@ -218,7 +232,6 @@ public class Bomberman extends Application {
             }
             loadLevel();
         }
-        status = 0;
     }
 
     /** Render objects. */

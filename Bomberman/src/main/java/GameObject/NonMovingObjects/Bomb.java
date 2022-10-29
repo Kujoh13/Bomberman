@@ -22,6 +22,7 @@ public class Bomb extends GameObject {
     }
 
     public void update() {
+        setImg(Sprite.movingSprite(Sprite.bomb, Sprite.bomb_1, Sprite.bomb_2, Bomberman.animate, 100).getFxImage());
         timer--;
         if (timer == 0) {
             Audio.playEffect(Audio.explosion);

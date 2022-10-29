@@ -6,7 +6,10 @@ import Main.Bomberman;
 import javafx.scene.image.Image;
 
 public class Enemy extends GameObject {
-    public int velocity = 0;
+    public int velocity = 2;
+    public Sprite dead;
+    public int deadTimer = 30;
+    public boolean isDead = false;
     public Enemy(int x, int y, Image img) {
         super(x, y, img);
     }
@@ -21,6 +24,12 @@ public class Enemy extends GameObject {
     }
     @Override
     public void update() {
-        
+        if (isDead) {
+            img = dead.getFxImage();
+            deadTimer--;
+            if (deadTimer == 0) {
+                Bomberman.movingObjects.remove(this);
+            }
+        }
     }
 }

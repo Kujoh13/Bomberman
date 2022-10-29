@@ -78,6 +78,7 @@ public class Player extends GameObject {
             if (o instanceof Enemy) {
                 if (o.collision(this) && Bomberman.status != -1) {
                     Audio.stopMusic();
+                    Bomberman.loseTimer = 300;
                     Bomberman.status = -1;
                     Audio.playEffect(Audio.lose);
                 }
@@ -88,6 +89,7 @@ public class Player extends GameObject {
             if (o instanceof Explosion) {
                 if (o.collision(this) && Bomberman.status != -1) {
                     Audio.stopMusic();
+                    Bomberman.loseTimer = 300;
                     Bomberman.status = -1;
                     Audio.playEffect(Audio.lose);
                 }
