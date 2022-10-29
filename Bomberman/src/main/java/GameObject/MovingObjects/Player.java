@@ -1,6 +1,7 @@
 package GameObject.MovingObjects;
 
 import GameObject.GameObject;
+import GameObject.NonMovingObjects.Bomb;
 import GameObject.NonMovingObjects.BreakableWall;
 import GameObject.NonMovingObjects.Explosion;
 import GameObject.NonMovingObjects.Wall;
@@ -49,8 +50,15 @@ public class Player extends GameObject {
         }
     }
 
+    private int[] difX = {-1, 1, 0, 0};
+    private int[] difY = {0, 0, -1, 1};
+    private boolean[][] passed = new boolean[25][15];
+    private int addX;
+    private int addY;
     public void auto() {
+        if (Bomb.numberOfBombs > 0) {
 
+        }
     }
 
     private boolean checkCollision(int velX, int velY) {
