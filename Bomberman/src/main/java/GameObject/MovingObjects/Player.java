@@ -1,6 +1,7 @@
 package GameObject.MovingObjects;
 
 import GameObject.GameObject;
+import GameObject.NonMovingObjects.Bomb;
 import GameObject.NonMovingObjects.BreakableWall;
 import GameObject.NonMovingObjects.Explosion;
 import GameObject.NonMovingObjects.Wall;
@@ -97,11 +98,21 @@ public class Player extends GameObject {
         }
     }
 
-    private int checkCollision(int velX, int velY) {
+    private int[] difX = {-1, 1, 0, 0};
+    private int[] difY = {0, 0, -1, 1};
+    private boolean[][] passed = new boolean[25][15];
+    private int addX;
+    private int addY;
+    public void auto() {
+        if (Bomb.numberOfBombs > 0) {
+
+        }
+    }
+
+    private boolean checkCollision(int velX, int velY) {
         int xTemp = x + velX;
         int yTemp = y + velY;
-        int res = 0;
-        for(GameObject o: Bomberman.stillObjects) {
+        for (GameObject o: Bomberman.stillObjects) {
             if ((o instanceof Wall || o instanceof BreakableWall)
             && o.collision(xTemp, yTemp)) {
                 res++;

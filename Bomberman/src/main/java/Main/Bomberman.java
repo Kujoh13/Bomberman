@@ -182,6 +182,8 @@ public class Bomberman extends Application {
                         movingObjects.add(new Enemy3(j, i, Sprite.doll_dead.getFxImage()));
                     } else if (str.charAt(j) == '4') {
                         movingObjects.add(new Enemy4(j, i, Sprite.minvo_dead.getFxImage()));
+                    }  else if (str.charAt(j) == '5') {
+                        movingObjects.add(new Enemy5(j, i, Sprite.kondoria_dead.getFxImage()));
                     }
                 } else {
                     map[i][j] = 1;
