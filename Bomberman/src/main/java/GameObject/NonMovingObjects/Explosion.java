@@ -5,7 +5,7 @@ import Main.Bomberman;
 import javafx.scene.image.Image;
 
 public class Explosion extends GameObject {
-    private int timer = 60;
+    private int timer = 30;
 
     public Explosion(int x, int y, Image img) {
         super(x, y, img);
