@@ -27,6 +27,7 @@ public class Bomberman extends Application {
 
     public static final int WIDTH = 25;
     public static final int HEIGHT = 15;
+    public static final int numberOfLevels = 6;
     private GraphicsContext gc;
     private Canvas canvas;
     public static List<GameObject> movingObjects = new ArrayList<>();
@@ -40,6 +41,7 @@ public class Bomberman extends Application {
     private boolean upP = false;
     private boolean downP = false;
     public static int currentLevel = 1;
+    public static int status = 0;
 
     @Override
     public void start(Stage stage) {
@@ -118,22 +120,18 @@ public class Bomberman extends Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                render();
                 update();
+                render();
             }
         };
         timer.start();
         stage.setScene(scene);
         stage.show();
 
-        Audio.playMusic(Audio.bgm);
-        createMap();
-        player = new Player(1, 1, Sprite.player_down.getFxImage());
-        movingObjects.add(new Enemy1(23, 13, Sprite.balloon_dead.getFxImage()));
-        movingObjects.add(player);
+        loadLevel();
     }
 
-    public void createMap() {
+    public void loadLevel() {
         /*
             map:
                 0: wall
@@ -147,6 +145,11 @@ public class Bomberman extends Application {
                 4: immortality
                 5: teleport
          */
+        Audio.playMusic(Audio.bgm);
+        movingObjects.clear();
+        stillObjects.clear();
+        Bomb.numberOfBombs = 1;
+        Bomb.radius = 1;
         map = new int[HEIGHT][WIDTH];
         items = new int[HEIGHT][WIDTH];
         try{
@@ -169,6 +172,12 @@ public class Bomberman extends Application {
                     map[i][j] = 2;
                     object = new Grass(j, i, Sprite.grass.getFxImage());
                     items[i][j] = -1;
+                } else if (str.charAt(j) >= '0' && str.charAt(j) <= '9'){
+                    map[i][j] = 2;
+                    object = new Grass(j, i, Sprite.grass.getFxImage());
+                    if (str.charAt(j) == '1') {
+                        movingObjects.add(new Enemy1(j, i, Sprite.balloon_dead.getFxImage()));
+                    }
                 } else {
                     map[i][j] = 1;
                     object = new BreakableWall(j, i, Sprite.brick.getFxImage());
@@ -187,27 +196,40 @@ public class Bomberman extends Application {
                 stillObjects.add(object);
             }
         }
+        player = new Player(1, 1, Sprite.player_down.getFxImage());
+        movingObjects.add(player);
     }
 
-    /** Gameplay, character movement and enemies behaviour. */
+    /** Update objects. */
     public void update() {
         movingObjects.forEach(GameObject::update);
         stillObjects.forEach(GameObject::update);
 
-        //Bomb explosion handling
         for (Bomb bomb: Bomb.bombs) {
             bomb.update();
         }
 
-        //Player collision
-
+        if (status == -1) {
+            reset();
+        } else if (status == 1) {
+            currentLevel++;
+            loadLevel();
+        }
+        status = 0;
     }
 
+    /** Render objects. */
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         stillObjects.forEach(g -> g.render(gc));
         movingObjects.forEach(g -> g.render(gc));
         Bomb.bombs.forEach(g -> g.render(gc));
     }
+
+    public void reset() {
+        currentLevel = 1;
+        loadLevel();
+    }
+
 
 }

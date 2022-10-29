@@ -12,7 +12,7 @@ import java.util.List;
 
 public class Bomb extends GameObject {
     public static int radius = 1;
-    private int timer = 250;
+    private int timer = 300;
     public static int numberOfBombs = 1;
     private static int[] row = {0, 1, 0, -1};
     private static int[] col = {1, 0, -1, 0};
@@ -47,13 +47,13 @@ public class Bomb extends GameObject {
                                 if (Bomberman.items[curY][curX] != -1) {
                                     GameObject object;
                                     if (Bomberman.items[curY][curX] == 0) {
-                                        object = new Item(curX, curY, Sprite.portal.getFxImage());
+                                        object = new Portal(curX, curY, Sprite.portal.getFxImage());
                                     } else if (Bomberman.items[curY][curX] == 1) {
-                                        object = new Item(curX, curY, Sprite.powerup_bombpass.getFxImage());
+                                        object = new Flame(curX, curY, Sprite.powerup_flames.getFxImage());
                                     } else if (Bomberman.items[curY][curX] == 2) {
-                                        object = new Item(curX, curY, Sprite.powerup_bombs.getFxImage());
+                                        object = new Bombs(curX, curY, Sprite.powerup_bombs.getFxImage());
                                     } else {
-                                        object = new Item(curX, curY, Sprite.powerup_speed.getFxImage());
+                                        object = new SpeedUp(curX, curY, Sprite.powerup_speed.getFxImage());
                                     }
                                     Bomberman.stillObjects.add(object);
                                 }
@@ -84,7 +84,7 @@ public class Bomb extends GameObject {
                         }
                     }
                     for(GameObject o: Bomberman.movingObjects) {
-                        if (o instanceof Enemy) {
+                        if (o instanceof Enemy && o.collision(this)) {
                             Bomberman.movingObjects.remove(o);
                             Audio.playEffect(Audio.enemy_die);
                         }
