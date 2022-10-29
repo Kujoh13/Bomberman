@@ -22,10 +22,15 @@ public class Enemy extends GameObject {
     @Override
     public void update() {
         if (isDead) {
-            img = dead.getFxImage();
-            deadTimer--;
-            if (deadTimer == 0) {
-                Bomberman.movingObjects.remove(this);
+            if (this instanceof Enemy3) {
+                Bomberman.movingObjects.add(new Enemy2(x - (x % Sprite.SCALED_SIZE), y - (y % Sprite.SCALED_SIZE), Sprite.oneal_dead.getFxImage()));
+                Bomberman.movingObjects.add(new Enemy2(x - (x % Sprite.SCALED_SIZE), y - (y % Sprite.SCALED_SIZE), Sprite.oneal_dead.getFxImage()));
+            } else {
+                img = dead.getFxImage();
+                deadTimer--;
+                if (deadTimer == 0) {
+                    Bomberman.movingObjects.remove(this);
+                }
             }
         }
     }
