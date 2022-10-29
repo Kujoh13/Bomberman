@@ -176,7 +176,7 @@ public class Bomberman extends Application {
                     map[i][j] = 2;
                     object = new Grass(j, i, Sprite.grass.getFxImage());
                     if (str.charAt(j) == '1') {
-                        movingObjects.add(new Enemy1(j, i, Sprite.balloon_dead.getFxImage()));
+                        movingObjects.add(new Enemy5(j, i, Sprite.balloon_dead.getFxImage()));
                     }
                 } else {
                     map[i][j] = 1;
