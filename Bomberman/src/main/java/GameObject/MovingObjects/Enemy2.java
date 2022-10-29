@@ -18,6 +18,7 @@ public class Enemy2 extends Enemy {
 
     @Override
     public void update() {
+        super.update();
         if (fitSquare()) {
             addX = random.nextInt(3) - 1;
             if (addX == 0) {

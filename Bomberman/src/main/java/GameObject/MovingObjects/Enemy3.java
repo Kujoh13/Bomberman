@@ -19,6 +19,7 @@ public class Enemy3 extends Enemy {
     /** To move the same as the number 2 but can be separated into 2 Enemy2's. */
     @Override
     public void update() {
+        super.update();
         if (fitSquare()) {
             addX = random.nextInt(3) - 1;
             if (addX == 0) {

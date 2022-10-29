@@ -23,6 +23,7 @@ public class Enemy1 extends Enemy {
 
     @Override
     public void update() {
+        super.update();
         boolean collide = false;
         int newX = horizontal ? x + dif * velocity : x;
         int newY = horizontal ? y : y + dif * velocity;
