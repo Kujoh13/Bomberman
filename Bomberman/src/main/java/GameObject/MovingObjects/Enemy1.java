@@ -24,9 +24,10 @@ public class Enemy1 extends Enemy {
     @Override
     public void update() {
         boolean collide = false;
+        int newX = horizontal ? x + dif * velocity : x;
+        int newY = horizontal ? y : y + dif * velocity;
+
         for (GameObject o : Bomberman.stillObjects) {
-            int newX = horizontal ? x + dif * velocity : x;
-            int newY = horizontal ? y : y + dif * velocity;
             if ((o instanceof Wall || o instanceof BreakableWall)
                  && o.collision(newX, newY)) {
                 collide = true;

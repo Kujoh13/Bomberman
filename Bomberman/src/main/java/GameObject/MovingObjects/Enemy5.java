@@ -1,72 +1,135 @@
 package GameObject.MovingObjects;
 
+import GameObject.GameObject;
+import GameObject.NonMovingObjects.BreakableWall;
+import GameObject.NonMovingObjects.Wall;
+import Graphics.Sprite;
 import javafx.scene.image.Image;
-import javafx.util.Pair;
 import Main.Bomberman;
 
+import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Stack;
+import java.util.Random;
 
 public class Enemy5 extends Enemy {
+    Random random = new Random();
+    private int[] difX = {-1, 1, 0, 0};
+    private int[] difY = {0, 0, -1, 1};
+    private boolean[][] passed = new boolean[25][15];
+    private int addX;
+    private int addY;
     public Enemy5(int x, int y, Image img) {
         super(x, y, img);
     }
 
-    public void update() {
-        Queue<Pair<Integer, Integer> > moveList = null;
+    private class Stats {
+        /** x and y are in position not pixels */
+        private int x;
+        private int y;
+        private Stats pre;
+        private Stats() {
 
-        int[] addX = {1, -1, 0, 0};
-        int[] addY = {0, 0, -1, 1};
+        }
+        private Stats(int x, int y, Stats pre) {
+            this.x = x;
+            this.y = y;
+            this.pre = pre;
+        }
 
-        moveList.add(new Pair<>(x, y));
+        private boolean equals(Stats o) {
+            return this.x == o.x && this.y == o.y;
+        }
+    }
 
-        int[][] timer = new int[25][15];
-        Pair<Integer, Integer>[][] preMove = new Pair[Bomberman.WIDTH][Bomberman.HEIGHT];
+    private void modifyPosition() {
+        x += addX * velocity;
+        y += addY * velocity;
+    }
 
-        for (int i = 0; i < Bomberman.WIDTH; i++)
-            for (int j = 0; j < Bomberman.HEIGHT; j++)
-                timer[i][j] = Bomberman.WIDTH * Bomberman.HEIGHT;
+    public void randomMove() {
+        addX = random.nextInt(3) - 1;
+        if (addX == 0) {
+            addY = random.nextBoolean() ? -1 : 1;
+        } else {
+            addY = 0;
+        }
 
-        /** To set the current position as default. */
-        timer[x][y] = 0;
-        preMove[x][y] = new Pair<> (0, 0);
-        /**  */
-
-        int newX = 0, newY = 0;
-        int curX = 0, curY = 0;
-
-        while (moveList.peek().getKey() != Bomberman.player.getX()
-            && moveList.peek().getValue() != Bomberman.player.getY()) {
-
-            curX = moveList.peek().getKey();
-            curY = moveList.peek().getValue();
-
-            for (int i = 0; i < 4; i++) {
-                newX = curX + addX[i];
-                newY = curY + addY[i];
-
-                if (newX < Bomberman.WIDTH && newX >= 0
-                        && newY < Bomberman.HEIGHT && newY >= 0
-                        && Bomberman.map[newX][newY] == 2) {
-                    if (timer[newX][newY] > timer[curX][curY] + 1) {
-                        moveList.add(new Pair<> (newX, newY));
-                        timer[newX][newY] = timer[curX][curY] + 1;
-                        preMove[newX][newY] = new Pair<> (curX, curY);
-                    }
-                }
+        int newX = x + addX * velocity;
+        int newY = y + addY * velocity;
+        boolean collide = false;
+        for (GameObject o : Bomberman.stillObjects) {
+            if ((o instanceof Wall || o instanceof BreakableWall)
+                    && o.collision(newX, newY)) {
+                collide = true;
+                break;
             }
         }
 
-        curX = x;
-        curY = y;
-
-        while (curX != 0 && curY != 0) {
-            newX = curX;  newY = curY;
-
-            curX = preMove[newX][newY].getKey();
-            curY = preMove[newX][newY].getValue();
+        if (!collide) {
+            modifyPosition();
         }
+    }
 
-        x = newX;  y = newY;
+    public void update() {
+        if (fitSquare()) {
+            Stats root = new Stats(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, null);
+            Stats cur = new Stats();
+            int newX, newY;
+
+            Queue<Stats> move = new LinkedList<>();
+
+            for (int i = 1; i < Bomberman.WIDTH; i++)
+                for (int j = 1; j < Bomberman.HEIGHT; j++)
+                    passed[i][j] = false;
+
+            passed[x / Sprite.SCALED_SIZE][y / Sprite.SCALED_SIZE] = true;
+            move.add(root);
+            boolean meetPlayer = false;
+
+            while (!move.isEmpty()) {
+                cur = move.poll();
+                passed[cur.x][cur.y] = true;
+
+                if (Bomberman.player.collision(cur.x * Sprite.SCALED_SIZE, cur.y * Sprite.SCALED_SIZE)) {
+                    meetPlayer = true;
+                    break;
+                }
+
+                for (int i = 0; i < 4; i++) {
+                    newX = cur.x + difX[i];
+                    newY = cur.y + difY[i];
+
+                    boolean collide = false;
+                    for (GameObject o : Bomberman.stillObjects) {
+                        if ((o instanceof Wall || o instanceof BreakableWall)
+                                && o.collision(newX * Sprite.SCALED_SIZE, newY * Sprite.SCALED_SIZE)) {
+                            collide = true;
+                            break;
+                        }
+                    }
+
+                    if (!collide && !passed[newX][newY]) {
+                        move.add(new Stats(newX, newY, cur));
+                    }
+                }
+            }
+
+
+            if (meetPlayer) {
+                while (!cur.pre.equals(root)) {
+                    cur = cur.pre;
+                }
+                addX = cur.x - (x / Sprite.SCALED_SIZE);
+                addY = cur.y - (y / Sprite.SCALED_SIZE);
+                System.out.println(addX + " " + addY);
+                modifyPosition();
+
+            } else {
+                randomMove();
+            }
+
+        } else {
+            modifyPosition();
+        }
     }
 }

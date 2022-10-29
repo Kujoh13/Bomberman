@@ -27,10 +27,10 @@ public class Enemy3 extends Enemy {
                 addY = 0;
             }
 
+            int newX = x + addX * velocity;
+            int newY = y + addY * velocity;
             boolean collide = false;
             for (GameObject o : Bomberman.stillObjects) {
-                int newX = x + addX * velocity;
-                int newY = y + addY * velocity;
                 if ((o instanceof Wall || o instanceof BreakableWall)
                         && o.collision(newX, newY)) {
                     collide = true;

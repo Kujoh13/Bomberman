@@ -49,10 +49,14 @@ public class Player extends GameObject {
         }
     }
 
+    public void auto() {
+
+    }
+
     private boolean checkCollision(int velX, int velY) {
         int xTemp = x + velX;
         int yTemp = y + velY;
-        for(GameObject o: Bomberman.stillObjects) {
+        for (GameObject o: Bomberman.stillObjects) {
             if ((o instanceof Wall || o instanceof BreakableWall)
             && o.collision(xTemp, yTemp)) {
                 return true;
