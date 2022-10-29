@@ -39,6 +39,7 @@ public abstract class GameObject {
         return true;
     }
 
+
     public boolean fitSquare() {
         return x % Sprite.SCALED_SIZE == 0 && y % Sprite.SCALED_SIZE == 0;
     }
@@ -59,5 +60,9 @@ public abstract class GameObject {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public void setImg(Image img) {
+        this.img = img;
     }
 }

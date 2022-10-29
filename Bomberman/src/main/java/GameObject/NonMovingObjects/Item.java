@@ -68,12 +68,12 @@ class SpeedUp extends Item {
     public void update() {
         if (PlayerPickUp() && timer == 0) {
             Audio.playEffect(Audio.collect_item);
-            Player.player_speed *= 2;
+            Player.player_speed = 6;
             timer = 600;
         }
         timer--;
         if (timer == 0) {
-            Player.player_speed /= 2;
+            Player.player_speed = 3;
             Bomberman.stillObjects.remove(this);
         }
     }

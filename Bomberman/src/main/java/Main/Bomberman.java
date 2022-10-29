@@ -14,7 +14,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -27,7 +26,7 @@ public class Bomberman extends Application {
 
     public static final int WIDTH = 25;
     public static final int HEIGHT = 15;
-    public static final int numberOfLevels = 6;
+    public static final int numberOfLevels = 5;
     private GraphicsContext gc;
     private Canvas canvas;
     public static List<GameObject> movingObjects = new ArrayList<>();
@@ -42,6 +41,8 @@ public class Bomberman extends Application {
     private boolean downP = false;
     public static int currentLevel = 1;
     public static int status = 0;
+    public static int loseTimer;
+    public static int animate = 0;
 
     @Override
     public void start(Stage stage) {
@@ -111,15 +112,10 @@ public class Bomberman extends Application {
                 }
             }
         });
-        scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-
-            }
-        });
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
+                animate++;
                 update();
                 render();
             }
@@ -145,13 +141,16 @@ public class Bomberman extends Application {
                 4: immortality
                 5: teleport
          */
+        status = 0;
         Audio.playMusic(Audio.bgm);
         movingObjects.clear();
         stillObjects.clear();
+        Bomb.bombs.clear();
         Bomb.numberOfBombs = 1;
         Bomb.radius = 1;
         map = new int[HEIGHT][WIDTH];
         items = new int[HEIGHT][WIDTH];
+        Player.player_speed = 3;
         try{
             File file = new File("src//main//resources//levels//Level" + currentLevel + ".txt");
             scanner = new Scanner(file);
@@ -176,7 +175,15 @@ public class Bomberman extends Application {
                     map[i][j] = 2;
                     object = new Grass(j, i, Sprite.grass.getFxImage());
                     if (str.charAt(j) == '1') {
-                        movingObjects.add(new Enemy5(j, i, Sprite.balloon_dead.getFxImage()));
+                        movingObjects.add(new Enemy1(j, i, Sprite.balloon_dead.getFxImage()));
+                    } else if (str.charAt(j) == '2') {
+                        movingObjects.add(new Enemy2(j, i, Sprite.oneal_dead.getFxImage()));
+                    } else if (str.charAt(j) == '3') {
+                        movingObjects.add(new Enemy3(j, i, Sprite.doll_dead.getFxImage()));
+                    } else if (str.charAt(j) == '4') {
+                        movingObjects.add(new Enemy4(j, i, Sprite.minvo_dead.getFxImage()));
+                    }  else if (str.charAt(j) == '5') {
+                        movingObjects.add(new Enemy5(j, i, Sprite.kondoria_dead.getFxImage()));
                     }
                 } else {
                     map[i][j] = 1;
@@ -190,6 +197,10 @@ public class Bomberman extends Application {
                         items[i][j] = 2;
                     } else if (str.charAt(j) == 's') {
                         items[i][j] = 3;
+                    } else if (str.charAt(j) == 'i') {
+                        items[i][j] = 4;
+                    } else if (str.charAt(j) == 't') {
+                        items[i][j] = 5;
                     }
                 }
 
@@ -202,20 +213,27 @@ public class Bomberman extends Application {
 
     /** Update objects. */
     public void update() {
-        movingObjects.forEach(GameObject::update);
-        stillObjects.forEach(GameObject::update);
-
-        for (Bomb bomb: Bomb.bombs) {
-            bomb.update();
+        if (status != -1) {
+            System.out.println(Player.player_speed);
+            movingObjects.forEach(GameObject::update);
+            stillObjects.forEach(GameObject::update);
+            for (Bomb bomb : Bomb.bombs) {
+                bomb.update();
+            }
         }
 
         if (status == -1) {
-            reset();
+            loseTimer--;
+            player.setImg(Sprite.movingSprite(Sprite.player_dead1, Sprite.player_dead2, Sprite.player_dead3, animate, 300).getFxImage());
+            if (loseTimer == 0)
+                reset();
         } else if (status == 1) {
             currentLevel++;
+            if (currentLevel == numberOfLevels) {
+                Audio.playEffect(Audio.win);
+            }
             loadLevel();
         }
-        status = 0;
     }
 
     /** Render objects. */
