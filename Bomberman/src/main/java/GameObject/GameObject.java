@@ -39,6 +39,10 @@ public abstract class GameObject {
         return true;
     }
 
+    public boolean fitSquare() {
+        return x % Sprite.SCALED_SIZE == 0 && y % Sprite.SCALED_SIZE == 0;
+    }
+
     public abstract void update();
 
     public int getX() {

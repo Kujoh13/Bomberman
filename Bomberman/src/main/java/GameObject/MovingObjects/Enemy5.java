@@ -71,6 +71,7 @@ public class Enemy5 extends Enemy {
     }
 
     public void update() {
+        super.update();
         if (fitSquare()) {
             Stats root = new Stats(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, null);
             Stats cur = new Stats();
@@ -121,7 +122,6 @@ public class Enemy5 extends Enemy {
                 }
                 addX = cur.x - (x / Sprite.SCALED_SIZE);
                 addY = cur.y - (y / Sprite.SCALED_SIZE);
-                System.out.println(addX + " " + addY);
                 modifyPosition();
 
             } else {
