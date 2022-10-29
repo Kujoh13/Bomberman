@@ -1,7 +1,6 @@
 package GameObject.NonMovingObjects;
 
 import GameObject.GameObject;
-import GameObject.MovingObjects.Enemy;
 import Graphics.Sprite;
 import Main.Bomberman;
 import Sounds.Audio;
