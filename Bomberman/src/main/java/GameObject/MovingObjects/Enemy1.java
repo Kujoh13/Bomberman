@@ -30,6 +30,7 @@ public class Enemy1 extends Enemy {
             if ((o instanceof Wall || o instanceof BreakableWall)
                  && o.collision(newX, newY)) {
                 collide = true;
+                break;
             }
         }
 
