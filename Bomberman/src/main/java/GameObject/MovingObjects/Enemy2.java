@@ -12,12 +12,14 @@ public class Enemy2 extends Enemy {
     private Random random = new Random();
     private int addX;
     private int addY;
+    public int timer = 35;
     public Enemy2(int x, int y, Image img) {
         super(x, y, img);
     }
 
     @Override
     public void update() {
+        timer--;
         if (fitSquare()) {
             addX = random.nextInt(3) - 1;
             if (addX == 0) {

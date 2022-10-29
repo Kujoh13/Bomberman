@@ -83,12 +83,6 @@ public class Bomb extends GameObject {
                             }
                         }
                     }
-                    for(GameObject o: Bomberman.movingObjects) {
-                        if (o instanceof Enemy && o.collision(this)) {
-                            Bomberman.movingObjects.remove(o);
-                            Audio.playEffect(Audio.enemy_die);
-                        }
-                    }
                     curRadius++;
                 }
             }
@@ -109,15 +103,19 @@ public class Bomb extends GameObject {
         for (GameObject o: Bomberman.stillObjects) {
             if (o instanceof Grass && o.collision(Bomberman.player)) {
                 int x1 = Math.max(Bomberman.player.getX(), o.getX());
-                int x2 = Math.min(Bomberman.player.getX(), o.getX()) + Sprite.SCALED_SIZE;
+                int x2 = Math.min(Bomberman.player.getX(), o.getX()) + Sprite.SCALED_SIZE - 1;
                 int y1 = Math.max(Bomberman.player.getY(), o.getY());
-                int y2 = Math.min(Bomberman.player.getY(), o.getY()) + Sprite.SCALED_SIZE;
+                int y2 = Math.min(Bomberman.player.getY(), o.getY()) + Sprite.SCALED_SIZE - 1;
                 if ((x2 - x1) * (y2 - y1) > collisionArea) {
                     finalX = o.getX() / Sprite.SCALED_SIZE;
                     finalY = o.getY() / Sprite.SCALED_SIZE;
                     collisionArea = (x2 - x1) * (y2 - y1);
                 }
             }
+        }
+        for (Bomb bomb: bombs) {
+            if (bomb.getX() == finalX * Sprite.SCALED_SIZE && bomb.getY() == finalY * Sprite.SCALED_SIZE)
+                return false;
         }
         bombs.add(new Bomb(finalX, finalY,Sprite.bomb.getFxImage()));
         return true;

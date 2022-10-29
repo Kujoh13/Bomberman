@@ -39,8 +39,6 @@ public abstract class GameObject {
         return true;
     }
 
-
-
     public abstract void update();
 
     public int getX() {
@@ -57,5 +55,9 @@ public abstract class GameObject {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public void setImg(Image img) {
+        this.img = img;
     }
 }

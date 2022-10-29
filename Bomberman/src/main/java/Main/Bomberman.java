@@ -27,7 +27,7 @@ public class Bomberman extends Application {
 
     public static final int WIDTH = 25;
     public static final int HEIGHT = 15;
-    public static final int numberOfLevels = 6;
+    public static final int numberOfLevels = 5;
     private GraphicsContext gc;
     private Canvas canvas;
     public static List<GameObject> movingObjects = new ArrayList<>();
@@ -111,12 +111,6 @@ public class Bomberman extends Application {
                 }
             }
         });
-        scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-
-            }
-        });
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
@@ -148,6 +142,7 @@ public class Bomberman extends Application {
         Audio.playMusic(Audio.bgm);
         movingObjects.clear();
         stillObjects.clear();
+        Bomb.bombs.clear();
         Bomb.numberOfBombs = 1;
         Bomb.radius = 1;
         map = new int[HEIGHT][WIDTH];
@@ -177,6 +172,12 @@ public class Bomberman extends Application {
                     object = new Grass(j, i, Sprite.grass.getFxImage());
                     if (str.charAt(j) == '1') {
                         movingObjects.add(new Enemy1(j, i, Sprite.balloon_dead.getFxImage()));
+                    } else if (str.charAt(j) == '2') {
+                        movingObjects.add(new Enemy2(j, i, Sprite.oneal_dead.getFxImage()));
+                    } else if (str.charAt(j) == '3') {
+                        movingObjects.add(new Enemy3(j, i, Sprite.doll_dead.getFxImage()));
+                    } else if (str.charAt(j) == '4') {
+                        movingObjects.add(new Enemy4(j, i, Sprite.minvo_dead.getFxImage()));
                     }
                 } else {
                     map[i][j] = 1;
@@ -204,7 +205,6 @@ public class Bomberman extends Application {
     public void update() {
         movingObjects.forEach(GameObject::update);
         stillObjects.forEach(GameObject::update);
-
         for (Bomb bomb: Bomb.bombs) {
             bomb.update();
         }
@@ -213,6 +213,9 @@ public class Bomberman extends Application {
             reset();
         } else if (status == 1) {
             currentLevel++;
+            if (currentLevel == numberOfLevels) {
+                Audio.playEffect(Audio.win);
+            }
             loadLevel();
         }
         status = 0;
