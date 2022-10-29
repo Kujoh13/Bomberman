@@ -2,14 +2,17 @@ package GameObject.MovingObjects;
 
 import GameObject.GameObject;
 import GameObject.NonMovingObjects.BreakableWall;
+import GameObject.NonMovingObjects.Explosion;
 import GameObject.NonMovingObjects.Wall;
 import Main.Bomberman;
+import Sounds.Audio;
 import javafx.scene.image.Image;
 
 public class Player extends GameObject {
     public static int player_speed = 6;
     private int velX = 0;
     private int velY = 0;
+    private boolean immortal = false;
     public Player() {
 
     }
@@ -21,6 +24,28 @@ public class Player extends GameObject {
         if (!checkCollision(velX, velY)) {
             x = x + velX;
             y = y + velY;
+        }
+        if (immortal) {
+            return;
+        }
+        for (GameObject o: Bomberman.movingObjects) {
+            if (o instanceof Enemy) {
+                if (o.collision(this) && Bomberman.status != -1) {
+                    Audio.stopMusic();
+                    Bomberman.status = -1;
+                    Audio.playEffect(Audio.lose);
+                }
+            }
+        }
+
+        for (GameObject o: Bomberman.stillObjects) {
+            if (o instanceof Explosion) {
+                if (o.collision(this) && Bomberman.status != -1) {
+                    Audio.stopMusic();
+                    Bomberman.status = -1;
+                    Audio.playEffect(Audio.lose);
+                }
+            }
         }
     }
 
@@ -50,5 +75,13 @@ public class Player extends GameObject {
 
     public void setVelY(int velY) {
         this.velY = velY;
+    }
+
+    public boolean isImmortal() {
+        return immortal;
+    }
+
+    public void setImmortal(boolean immortal) {
+        this.immortal = immortal;
     }
 }

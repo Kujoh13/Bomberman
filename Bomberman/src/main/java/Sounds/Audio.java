@@ -11,15 +11,13 @@ import java.io.File;
 public class Audio {
     private static AudioInputStream audioInputStream;
     private static Clip clip;
-    public static String bgm = "src//main//resources//audio//bgm_1.wav";
-    public static String click = "src//main//resources//audio//click.wav";
+    public static String bgm = "src//main//resources//audio//bgm.wav";
     public static String collect_item = "src//main//resources//audio//collect_item.wav";
     public static String enemy_die = "src//main//resources//audio//enemy_die.wav";
     public static String explosion = "src//main//resources//audio//explosion.wav";
     public static String lose = "src//main//resources//audio//lose.wav";
     public static String win = "src//main//resources//audio//win.wav";
     public static String portal = "src//main//resources//audio//portal.wav";
-    public static String choose_level = "src//main//resources//audio//choose_level.wav";
     public static String bomb_fuse = "src//main//resources//audio//bomb_fuse.wav";
     public static String bomb_countdown = "src//main//resources//audio//bomb_countdown.wav";
 
