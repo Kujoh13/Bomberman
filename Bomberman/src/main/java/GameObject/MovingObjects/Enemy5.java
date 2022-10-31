@@ -1,7 +1,6 @@
 package GameObject.MovingObjects;
 
 import GameObject.GameObject;
-import GameObject.NonMovingObjects.Bomb;
 import GameObject.NonMovingObjects.BreakableWall;
 import GameObject.NonMovingObjects.Wall;
 import Graphics.Sprite;

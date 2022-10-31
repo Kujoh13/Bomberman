@@ -32,8 +32,8 @@ public class Bomberman extends Application {
     public static List<GameObject> movingObjects = new ArrayList<>();
     public static List<GameObject> stillObjects = new ArrayList<>();
     public static Player player;
-    public static int map[][];
-    public static int items[][];
+    public static int[][] map;
+    public static int[][] items;
     public static Scanner scanner;
     private boolean leftP = false;
     private boolean rightP = false;
