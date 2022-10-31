@@ -112,6 +112,7 @@ public class Bomberman extends Application {
                 }
             }
         });
+
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
@@ -214,7 +215,6 @@ public class Bomberman extends Application {
     /** Update objects. */
     public void update() {
         if (status != -1) {
-            System.out.println(Player.player_speed);
             movingObjects.forEach(GameObject::update);
             stillObjects.forEach(GameObject::update);
             for (Bomb bomb : Bomb.bombs) {
@@ -234,6 +234,8 @@ public class Bomberman extends Application {
             }
             loadLevel();
         }
+
+        //player.auto();
     }
 
     /** Render objects. */

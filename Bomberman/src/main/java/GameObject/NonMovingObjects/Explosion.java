@@ -22,8 +22,6 @@ public class Explosion extends GameObject {
                 if (!(o instanceof Enemy2) || (o instanceof Enemy2 && ((Enemy2) o).timer <= 0)) {
                     Bomberman.movingObjects.remove(o);
                 }
-                if (o instanceof Enemy2)
-                    System.out.println("timer" + ((Enemy2) o).timer);
                 Audio.playEffect(Audio.enemy_die);
                 if (o instanceof Enemy3) {
                     Enemy2 temp1 = new Enemy2(1, 1, Sprite.oneal_dead.getFxImage());

@@ -1,6 +1,7 @@
 package GameObject.MovingObjects;
 
 import GameObject.GameObject;
+import GameObject.NonMovingObjects.Bomb;
 import Graphics.Sprite;
 import Main.Bomberman;
 import javafx.scene.image.Image;
@@ -17,6 +18,15 @@ public class Enemy extends GameObject {
     public static boolean inMap(int x, int y) {
         return x >= Sprite.SCALED_SIZE && x <= (Bomberman.WIDTH - 2) * Sprite.SCALED_SIZE
                 && y >= Sprite.SCALED_SIZE && y <= (Bomberman.HEIGHT - 2) * Sprite.SCALED_SIZE;
+    }
+
+    public boolean touchBomb(int x, int y) {
+        for (Bomb bomb : Bomb.bombs) {
+            if (bomb.collision(x, y)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
