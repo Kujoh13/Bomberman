@@ -7,8 +7,8 @@ import javafx.scene.image.Image;
 
 public class Enemy extends GameObject {
     public int velocity = 2;
-    public Sprite dead;
-    public int deadTimer = 30;
+    protected Sprite dead;
+    public int deadTimer = 45;
     public boolean isDead = false;
     public Enemy(int x, int y, Image img) {
         super(x, y, img);
@@ -26,10 +26,6 @@ public class Enemy extends GameObject {
             deadTimer--;
             if (deadTimer == 0) {
                 Bomberman.movingObjects.remove(this);
-            }
-            if (this instanceof Enemy3) {
-                Bomberman.movingObjects.add(new Enemy2(x - (x % Sprite.SCALED_SIZE), y - (y % Sprite.SCALED_SIZE), Sprite.oneal_dead.getFxImage()));
-                Bomberman.movingObjects.add(new Enemy2(x - (x % Sprite.SCALED_SIZE), y - (y % Sprite.SCALED_SIZE), Sprite.oneal_dead.getFxImage()));
             }
         }
     }
