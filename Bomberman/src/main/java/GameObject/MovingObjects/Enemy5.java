@@ -1,7 +1,7 @@
 package GameObject.MovingObjects;
 
 import GameObject.GameObject;
-import GameObject.NonMovingObjects.BreakableWall;
+import GameObject.NonMovingObjects.Brick;
 import GameObject.NonMovingObjects.Wall;
 import Graphics.Sprite;
 import javafx.scene.image.Image;
@@ -59,7 +59,7 @@ public class Enemy5 extends Enemy {
         int newY = y + addY * velocity;
         boolean collide = touchBomb(newX, newY);
         for (GameObject o : Bomberman.stillObjects) {
-            if ((o instanceof Wall || o instanceof BreakableWall)
+            if ((o instanceof Wall || o instanceof Brick)
                     && o.collision(newX, newY)) {
                 collide = true;
                 break;
@@ -74,6 +74,7 @@ public class Enemy5 extends Enemy {
     public void update() {
         super.update();
         int prevX = x;
+        if (isDead) return;
         if (fitSquare()) {
             Stats root = new Stats(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, null);
             Stats cur = new Stats();
@@ -104,7 +105,7 @@ public class Enemy5 extends Enemy {
 
                     boolean collide = touchBomb(newX, newY);
                     for (GameObject o : Bomberman.stillObjects) {
-                        if ((o instanceof Wall || o instanceof BreakableWall)
+                        if ((o instanceof Wall || o instanceof Brick)
                                 && o.collision(newX * Sprite.SCALED_SIZE, newY * Sprite.SCALED_SIZE)) {
                             collide = true;
                             break;
