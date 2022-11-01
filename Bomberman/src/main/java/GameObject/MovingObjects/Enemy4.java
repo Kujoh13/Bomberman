@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class Enemy4 extends Enemy {
 
-    private Random random = new Random();
+    private final Random random = new Random();
     private int addX;
     private int addY;
     public Enemy4(int x, int y, Image img) {

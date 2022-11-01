@@ -12,9 +12,9 @@ import java.util.Queue;
 import java.util.Random;
 
 public class Enemy5 extends Enemy {
-    Random random = new Random();
-    private int[] difX = {-1, 1, 0, 0};
-    private int[] difY = {0, 0, -1, 1};
+    private final Random random = new Random();
+    private final int[] difX = {-1, 1, 0, 0};
+    private final int[] difY = {0, 0, -1, 1};
     private boolean[][] passed = new boolean[25][15];
     private int addX;
     private int addY;
@@ -57,7 +57,7 @@ public class Enemy5 extends Enemy {
 
         int newX = x + addX * velocity;
         int newY = y + addY * velocity;
-        boolean collide = false;
+        boolean collide = touchBomb(newX, newY);
         for (GameObject o : Bomberman.stillObjects) {
             if ((o instanceof Wall || o instanceof BreakableWall)
                     && o.collision(newX, newY)) {
@@ -102,7 +102,7 @@ public class Enemy5 extends Enemy {
                     newX = cur.x + difX[i];
                     newY = cur.y + difY[i];
 
-                    boolean collide = false;
+                    boolean collide = touchBomb(newX, newY);
                     for (GameObject o : Bomberman.stillObjects) {
                         if ((o instanceof Wall || o instanceof BreakableWall)
                                 && o.collision(newX * Sprite.SCALED_SIZE, newY * Sprite.SCALED_SIZE)) {

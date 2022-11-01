@@ -31,6 +31,7 @@ public class Enemy1 extends Enemy {
         int newX = horizontal ? x + dif * velocity : x;
         int newY = horizontal ? y : y + dif * velocity;
 
+        collide = touchBomb(newX, newY);
         for (GameObject o : Bomberman.stillObjects) {
             if ((o instanceof Wall || o instanceof BreakableWall)
                  && o.collision(newX, newY)) {

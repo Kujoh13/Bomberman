@@ -127,7 +127,7 @@ public class Bomb extends GameObject {
             if (bomb.getX() == finalX * Sprite.SCALED_SIZE && bomb.getY() == finalY * Sprite.SCALED_SIZE)
                 return false;
         }
-        bombs.add(new Bomb(finalX, finalY,Sprite.bomb.getFxImage()));
+        bombs.add(new Bomb(finalX, finalY, Sprite.bomb.getFxImage()));
         return true;
     }
 

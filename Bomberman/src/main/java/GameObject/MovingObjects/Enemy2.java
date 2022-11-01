@@ -10,7 +10,7 @@ import javafx.scene.image.Image;
 import java.util.Random;
 
 public class Enemy2 extends Enemy {
-    private Random random = new Random();
+    private final Random random = new Random();
     private int addX;
     private int addY;
     public Enemy2(int x, int y, Image img) {
@@ -32,7 +32,7 @@ public class Enemy2 extends Enemy {
 
             int newX = x + addX * velocity;
             int newY = y + addY * velocity;
-            boolean collide = false;
+            boolean collide = touchBomb(newX, newY);;
             for (GameObject o : Bomberman.stillObjects) {
                 if ((o instanceof Wall || o instanceof BreakableWall)
                         && o.collision(newX, newY)) {
@@ -40,6 +40,7 @@ public class Enemy2 extends Enemy {
                     break;
                 }
             }
+
 
             if (!collide) {
                 x += addX * velocity;
