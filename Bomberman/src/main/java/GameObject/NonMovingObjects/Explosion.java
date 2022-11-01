@@ -19,8 +19,9 @@ public class Explosion extends GameObject {
     public void update() {
         for(GameObject o: Bomberman.movingObjects) {
             if (o instanceof Enemy && o.collision(this)) {
-                if (((Enemy) o).isDead == false)
+                if (!((Enemy) o).isDead) {
                     Audio.playEffect(Audio.enemy_die);
+                }
                 ((Enemy) o).isDead = true;
             }
         }
