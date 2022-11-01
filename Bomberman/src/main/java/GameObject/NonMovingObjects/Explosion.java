@@ -19,27 +19,15 @@ public class Explosion extends GameObject {
     public void update() {
         for(GameObject o: Bomberman.movingObjects) {
             if (o instanceof Enemy && o.collision(this)) {
-                if (!(o instanceof Enemy2) || (o instanceof Enemy2 && ((Enemy2) o).timer <= 0)) {
-                    Bomberman.movingObjects.remove(o);
+                if (!((Enemy) o).isDead) {
+                    Audio.playEffect(Audio.enemy_die);
                 }
-                Audio.playEffect(Audio.enemy_die);
-                if (o instanceof Enemy3) {
-                    Enemy2 temp1 = new Enemy2(1, 1, Sprite.oneal_dead.getFxImage());
-                    temp1.setX(o.getX());
-                    temp1.setY(o.getY());
-                    Enemy2 temp2 = new Enemy2(1, 1, Sprite.oneal_dead.getFxImage());
-                    temp2.setX(o.getX());
-                    temp2.setY(o.getY());
-                    Bomberman.movingObjects.add(temp1);
-                    Bomberman.movingObjects.add(temp2);
-                }
+                ((Enemy) o).isDead = true;
             }
         }
         timer--;
         if (timer == 0) {
             Bomberman.stillObjects.remove(this);
-        } else {
-
         }
     }
 }
