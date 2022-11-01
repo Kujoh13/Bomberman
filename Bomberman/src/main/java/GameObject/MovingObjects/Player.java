@@ -19,6 +19,7 @@ public class Player extends GameObject {
     private int velX = 0;
     private int velY = 0;
     private boolean immortal = false;
+    private int moveId;
     public Player() {
 
     }
@@ -27,7 +28,28 @@ public class Player extends GameObject {
     }
     @Override
     public void update() {
-        int collisionTimes = checkCollision(velX, velY) ? 1 : 0;
+        int collisionTimes = checkCollision(velX, velY);
+        moveId = 4;
+        if (velX > 0) moveId = 0;
+        if (velX < 0) moveId = 1;
+        if (velY > 0) moveId = 2;
+        if (velY < 0) moveId = 3;
+        switch (moveId) {
+            case 0:
+                setImg(Sprite.movingSprite(Sprite.player_right, Sprite.player_right_1, Sprite.player_right_2, Bomberman.animate, 30).getFxImage());
+                break;
+            case 1:
+                setImg(Sprite.movingSprite(Sprite.player_left, Sprite.player_left_1, Sprite.player_left_2, Bomberman.animate, 30).getFxImage());
+                break;
+            case 2:
+                setImg(Sprite.movingSprite(Sprite.player_down, Sprite.player_down_1, Sprite.player_down_2, Bomberman.animate, 30).getFxImage());
+                break;
+            case 3:
+                setImg(Sprite.movingSprite(Sprite.player_up, Sprite.player_up_1, Sprite.player_up_2, Bomberman.animate, 30).getFxImage());
+                break;
+            default:
+                break;
+        }
         if (collisionTimes == 0) {
             x = x + velX;
             y = y + velY;
@@ -190,7 +212,7 @@ public class Player extends GameObject {
                     newX = cur.x + difX[i];
                     newY = cur.y + difY[i];
 
-                    if (checkCollision(newX * Sprite.SCALED_SIZE, newY * Sprite.SCALED_SIZE)
+                    if (checkCollision(newX * Sprite.SCALED_SIZE, newY * Sprite.SCALED_SIZE) > 0
                             && !passed[newX][newY]) {
                         move.add(new Stats(newX, newY, cur));
                     }
@@ -217,16 +239,17 @@ public class Player extends GameObject {
         }
     }
 
-    private boolean checkCollision(int velX, int velY) {
+    private int checkCollision(int velX, int velY) {
         int xTemp = x + velX;
         int yTemp = y + velY;
+        int res = 0;
         for (GameObject o: Bomberman.stillObjects) {
             if ((o instanceof Wall || o instanceof BreakableWall)
                 && o.collision(xTemp, yTemp)) {
-                return true;
+                res++;
             }
         }
-        return false;
+        return res;
     }
 
     public int getVelX() {

@@ -25,7 +25,9 @@ public class Bomb extends GameObject {
         timer--;
         if (timer == 0) {
             Audio.playEffect(Audio.explosion);
-            Bomberman.stillObjects.add(new Explosion(this.x / Sprite.SCALED_SIZE, this.y / Sprite.SCALED_SIZE, Sprite.bomb_exploded.getFxImage()));
+            Explosion ex = new Explosion(this.x / Sprite.SCALED_SIZE, this.y / Sprite.SCALED_SIZE, Sprite.bomb_exploded.getFxImage());
+            ex.setAnimation(Sprite.bomb_exploded2, Sprite.bomb_exploded1, Sprite.bomb_exploded);
+            Bomberman.stillObjects.add(ex);
             for (int j = 0; j < col.length; j++) {
                 int x = this.x;
                 int y = this.y;
@@ -65,23 +67,31 @@ public class Bomb extends GameObject {
                     if(metWall) {
                         break;
                     } else {
+                        Explosion explosion;
                         if (curRadius < radius) {
                             if (j % 2 == 0) {
-                                Bomberman.stillObjects.add(new Explosion(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, Sprite.explosion_horizontal.getFxImage()));
+                                explosion = new Explosion(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, Sprite.explosion_horizontal.getFxImage());
+                                explosion.setAnimation(Sprite.explosion_horizontal2, Sprite.explosion_horizontal1, Sprite.explosion_horizontal);
                             } else {
-                                Bomberman.stillObjects.add(new Explosion(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, Sprite.explosion_vertical.getFxImage()));
+                                explosion = new Explosion(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, Sprite.explosion_vertical.getFxImage());
+                                explosion.setAnimation(Sprite.explosion_vertical2, Sprite.explosion_vertical1, Sprite.explosion_vertical);
                             }
                         } else {
                             if (j == 0) {
-                                Bomberman.stillObjects.add(new Explosion(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, Sprite.explosion_horizontal_right_last.getFxImage()));
+                                explosion = new Explosion(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, Sprite.explosion_horizontal_right_last.getFxImage());
+                                explosion.setAnimation(Sprite.explosion_horizontal_right_last2, Sprite.explosion_horizontal_right_last1, Sprite.explosion_horizontal_right_last);
                             } else if (j == 1) {
-                                Bomberman.stillObjects.add(new Explosion(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, Sprite.explosion_vertical_down_last.getFxImage()));
+                                explosion = new Explosion(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, Sprite.explosion_vertical_down_last.getFxImage());
+                                explosion.setAnimation(Sprite.explosion_vertical_down_last2, Sprite.explosion_vertical_down_last1, Sprite.explosion_vertical_down_last);
                             } else if (j == 2) {
-                                Bomberman.stillObjects.add(new Explosion(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, Sprite.explosion_horizontal_left_last.getFxImage()));
+                                explosion = new Explosion(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, Sprite.explosion_horizontal_left_last.getFxImage());
+                                explosion.setAnimation(Sprite.explosion_horizontal_left_last2, Sprite.explosion_horizontal_left_last1, Sprite.explosion_horizontal_left_last);
                             } else {
-                                Bomberman.stillObjects.add(new Explosion(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, Sprite.explosion_vertical_top_last.getFxImage()));
+                                explosion = new Explosion(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, Sprite.explosion_vertical_top_last.getFxImage());
+                                explosion.setAnimation(Sprite.explosion_vertical_top_last2, Sprite.explosion_vertical_top_last1, Sprite.explosion_vertical_top_last);
                             }
                         }
+                        Bomberman.stillObjects.add(explosion);
                     }
                     curRadius++;
                 }

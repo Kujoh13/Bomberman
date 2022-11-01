@@ -3,6 +3,7 @@ package GameObject.MovingObjects;
 import GameObject.GameObject;
 import GameObject.NonMovingObjects.BreakableWall;
 import GameObject.NonMovingObjects.Wall;
+import Graphics.Sprite;
 import Main.Bomberman;
 
 import javafx.scene.image.Image;
@@ -19,11 +20,13 @@ public class Enemy1 extends Enemy {
 
     public Enemy1(int x, int y, Image img) {
         super(x, y, img);
+        dead = Sprite.balloon_dead;
     }
 
     @Override
     public void update() {
         super.update();
+        int prevX = x;
         boolean collide = false;
         int newX = horizontal ? x + dif * velocity : x;
         int newY = horizontal ? y : y + dif * velocity;
@@ -45,6 +48,12 @@ public class Enemy1 extends Enemy {
             } else {
                 y += dif * velocity;
             }
+        }
+        if (prevX < x) {
+            img = Sprite.movingSprite(Sprite.balloon_right1, Sprite.balloon_right2, Sprite.balloon_right2, Bomberman.animate, 30).getFxImage();
+        }
+        if (prevX > x) {
+            img = Sprite.movingSprite(Sprite.balloon_left1, Sprite.balloon_left2, Sprite.balloon_left2, Bomberman.animate, 30).getFxImage();
         }
     }
 }

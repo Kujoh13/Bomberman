@@ -20,6 +20,7 @@ public class Enemy5 extends Enemy {
     private int addY;
     public Enemy5(int x, int y, Image img) {
         super(x, y, img);
+        dead = Sprite.kondoria_dead;
     }
 
     private class Stats {
@@ -72,6 +73,7 @@ public class Enemy5 extends Enemy {
 
     public void update() {
         super.update();
+        int prevX = x;
         if (fitSquare()) {
             Stats root = new Stats(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, null);
             Stats cur = new Stats();
@@ -130,6 +132,12 @@ public class Enemy5 extends Enemy {
 
         } else {
             modifyPosition();
+        }
+        if (prevX < x) {
+            img = Sprite.movingSprite(Sprite.kondoria_right1, Sprite.kondoria_right2, Sprite.kondoria_right2, Bomberman.animate, 30).getFxImage();
+        }
+        if (prevX > x) {
+            img = Sprite.movingSprite(Sprite.kondoria_left1, Sprite.kondoria_left2, Sprite.kondoria_left2, Bomberman.animate, 30).getFxImage();
         }
     }
 }

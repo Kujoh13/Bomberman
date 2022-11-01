@@ -176,15 +176,15 @@ public class Bomberman extends Application {
                     map[i][j] = 2;
                     object = new Grass(j, i, Sprite.grass.getFxImage());
                     if (str.charAt(j) == '1') {
-                        movingObjects.add(new Enemy1(j, i, Sprite.balloon_dead.getFxImage()));
+                        movingObjects.add(new Enemy1(j, i, Sprite.balloon_left1.getFxImage()));
                     } else if (str.charAt(j) == '2') {
-                        movingObjects.add(new Enemy2(j, i, Sprite.oneal_dead.getFxImage()));
+                        movingObjects.add(new Enemy2(j, i, Sprite.oneal_left1.getFxImage()));
                     } else if (str.charAt(j) == '3') {
-                        movingObjects.add(new Enemy3(j, i, Sprite.doll_dead.getFxImage()));
+                        movingObjects.add(new Enemy3(j, i, Sprite.doll_left1.getFxImage()));
                     } else if (str.charAt(j) == '4') {
-                        movingObjects.add(new Enemy4(j, i, Sprite.minvo_dead.getFxImage()));
+                        movingObjects.add(new Enemy4(j, i, Sprite.minvo_left1.getFxImage()));
                     }  else if (str.charAt(j) == '5') {
-                        movingObjects.add(new Enemy5(j, i, Sprite.kondoria_dead.getFxImage()));
+                        movingObjects.add(new Enemy5(j, i, Sprite.kondoria_left1.getFxImage()));
                     }
                 } else {
                     map[i][j] = 1;
@@ -225,13 +225,16 @@ public class Bomberman extends Application {
 
         if (status == -1) {
             loseTimer--;
-            player.setImg(Sprite.movingSprite(Sprite.player_dead1, Sprite.player_dead2, Sprite.player_dead3, animate, 300).getFxImage());
+            player.setImg(Sprite.movingSprite(Sprite.player_dead1, Sprite.player_dead2, Sprite.player_dead3, animate, 400).getFxImage());
             if (loseTimer == 0)
                 reset();
         } else if (status == 1) {
             currentLevel++;
+            Audio.stopMusic();
             if (currentLevel == numberOfLevels) {
                 Audio.playEffect(Audio.win);
+            } else {
+                Audio.playEffect(Audio.portal);
             }
             loadLevel();
         }
