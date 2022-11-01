@@ -215,6 +215,7 @@ public class Bomberman extends Application {
     /** Update objects. */
     public void update() {
         if (status != -1) {
+            //System.out.println(Player.player_speed);
             movingObjects.forEach(GameObject::update);
             stillObjects.forEach(GameObject::update);
             for (Bomb bomb : Bomb.bombs) {
