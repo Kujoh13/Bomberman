@@ -188,7 +188,7 @@ public class Bomberman extends Application {
                     }
                 } else {
                     map[i][j] = 1;
-                    object = new BreakableWall(j, i, Sprite.brick.getFxImage());
+                    object = new Brick(j, i, Sprite.brick.getFxImage());
                     items[i][j] = -1;
                     if (str.charAt(j) == 'p') {
                         items[i][j] = 0;

@@ -15,12 +15,18 @@ public class Bomb extends GameObject {
     public static int numberOfBombs = 1;
     private static int[] row = {0, 1, 0, -1};
     private static int[] col = {1, 0, -1, 0};
+    public boolean collidePlayer = true;
     public static List<Bomb> bombs = new ArrayList<>();
     public Bomb(int x, int y, Image img) {
         super(x, y, img);
     }
 
     public void update() {
+        if (collision(Bomberman.player)) {
+            collidePlayer = true;
+        } else {
+            collidePlayer = false;
+        }
         setImg(Sprite.movingSprite(Sprite.bomb, Sprite.bomb_1, Sprite.bomb_2, Bomberman.animate, 100).getFxImage());
         timer--;
         if (timer == 0) {
@@ -37,28 +43,11 @@ public class Bomb extends GameObject {
                     y += row[j] * Sprite.SCALED_SIZE;
                     boolean metWall = false;
                     for(GameObject o: Bomberman.stillObjects) {
-                        if ((o instanceof Wall || o instanceof BreakableWall)
+                        if ((o instanceof Wall || o instanceof Brick)
                                 && o.getY() == y && o.getX() == x){
                             metWall = true;
-                            if (o instanceof BreakableWall) {
-                                int curX = x / Sprite.SCALED_SIZE;
-                                int curY = y / Sprite.SCALED_SIZE;
-                                Bomberman.stillObjects.add(new Grass(curX, curY, Sprite.grass.getFxImage()));
-                                Bomberman.map[curY][curX] = 2;
-                                Bomberman.stillObjects.remove(o);
-                                if (Bomberman.items[curY][curX] != -1) {
-                                    GameObject object;
-                                    if (Bomberman.items[curY][curX] == 0) {
-                                        object = new Portal(curX, curY, Sprite.portal.getFxImage());
-                                    } else if (Bomberman.items[curY][curX] == 1) {
-                                        object = new Flame(curX, curY, Sprite.powerup_flames.getFxImage());
-                                    } else if (Bomberman.items[curY][curX] == 2) {
-                                        object = new Bombs(curX, curY, Sprite.powerup_bombs.getFxImage());
-                                    } else {
-                                        object = new SpeedUp(curX, curY, Sprite.powerup_speed.getFxImage());
-                                    }
-                                    Bomberman.stillObjects.add(object);
-                                }
+                            if (o instanceof Brick) {
+                                ((Brick) o).setTimer(15);
                             }
                             break;
                         }
