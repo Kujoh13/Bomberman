@@ -1,5 +1,6 @@
 package GameObject;
 
+import GameObject.NonMovingObjects.Bomb;
 import Graphics.Sprite;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -42,6 +43,15 @@ public abstract class GameObject {
 
     public boolean fitSquare() {
         return x % Sprite.SCALED_SIZE == 0 && y % Sprite.SCALED_SIZE == 0;
+    }
+
+    public boolean touchBomb(int x, int y) {
+        for (Bomb bomb : Bomb.bombs) {
+            if (bomb.collision(x, y)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public abstract void update();
