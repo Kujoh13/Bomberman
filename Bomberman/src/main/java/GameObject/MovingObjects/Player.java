@@ -191,7 +191,7 @@ public class Player extends GameObject {
             passed[cur.x][cur.y] = true;
 
             for (GameObject o : Bomberman.movingObjects) {
-                if (o instanceof Enemy
+                if (o instanceof Enemy && !((Enemy) o).isDead
                         && o.collision(cur.x * Sprite.SCALED_SIZE, cur.y * Sprite.SCALED_SIZE)) {
                     meetEnemy = true;
                     break;
