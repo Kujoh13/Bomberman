@@ -103,7 +103,7 @@ public class Player extends GameObject {
         }
         for (GameObject o: Bomberman.movingObjects) {
             if (o instanceof Enemy) {
-                if (o.collision(this) && Bomberman.status != -1) {
+                if (!((Enemy) o).isDead && o.collision(this) && Bomberman.status != -1) {
                     Audio.stopMusic();
                     Bomberman.loseTimer = 300;
                     Bomberman.status = -1;

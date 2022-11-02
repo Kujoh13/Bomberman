@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -117,7 +118,11 @@ public class Bomberman extends Application {
             @Override
             public void handle(long l) {
                 animate++;
-                update();
+                try {
+                    update();
+                } catch (ConcurrentModificationException e) {
+
+                }
                 render();
             }
         };
