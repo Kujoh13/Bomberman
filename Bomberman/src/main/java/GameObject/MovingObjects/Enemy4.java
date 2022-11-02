@@ -20,6 +20,7 @@ public class Enemy4 extends Enemy {
     public void update() {
         super.update();
         int prevX = x;
+        if (isDead) return;
         if (fitSquare()) {
             addX = random.nextInt(3) - 1;
             if (addX == 0) {

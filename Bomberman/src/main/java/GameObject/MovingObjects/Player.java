@@ -2,7 +2,7 @@ package GameObject.MovingObjects;
 
 import GameObject.GameObject;
 import GameObject.NonMovingObjects.Bomb;
-import GameObject.NonMovingObjects.BreakableWall;
+import GameObject.NonMovingObjects.Brick;
 import GameObject.NonMovingObjects.Explosion;
 import GameObject.NonMovingObjects.Wall;
 import Graphics.Sprite;
@@ -207,7 +207,7 @@ public class Player extends GameObject {
 
             if (block == null) {
                 for (GameObject o : Bomberman.stillObjects) {
-                    if (o instanceof BreakableWall)
+                    if (o instanceof Brick)
                         for (int i = 0; i < 4; i++) {
                             if (o.collision(cur.x * Sprite.SCALED_SIZE + difX[i],
                                     cur.y * Sprite.SCALED_SIZE + difY[i])) {
@@ -411,8 +411,13 @@ public class Player extends GameObject {
         int yTemp = y + velY;
         int res = 0;
         for (GameObject o: Bomberman.stillObjects) {
-            if ((o instanceof Wall || o instanceof BreakableWall)
+            if ((o instanceof Wall || o instanceof Brick)
                 && o.collision(xTemp, yTemp)) {
+                res++;
+            }
+        }
+        for (Bomb bomb: Bomb.bombs) {
+            if (bomb.collision(xTemp, yTemp) && !bomb.collidePlayer) {
                 res++;
             }
         }

@@ -1,7 +1,7 @@
 package GameObject.MovingObjects;
 
 import GameObject.GameObject;
-import GameObject.NonMovingObjects.BreakableWall;
+import GameObject.NonMovingObjects.Brick;
 import GameObject.NonMovingObjects.Wall;
 import Graphics.Sprite;
 import Main.Bomberman;
@@ -21,6 +21,7 @@ public class Enemy2 extends Enemy {
     @Override
     public void update() {
         super.update();
+        if (isDead) return;
         int prevX = x;
         if (fitSquare()) {
             addX = random.nextInt(3) - 1;
@@ -34,7 +35,7 @@ public class Enemy2 extends Enemy {
             int newY = y + addY * velocity;
             boolean collide = touchBomb(newX, newY);;
             for (GameObject o : Bomberman.stillObjects) {
-                if ((o instanceof Wall || o instanceof BreakableWall)
+                if ((o instanceof Wall || o instanceof Brick)
                         && o.collision(newX, newY)) {
                     collide = true;
                     break;

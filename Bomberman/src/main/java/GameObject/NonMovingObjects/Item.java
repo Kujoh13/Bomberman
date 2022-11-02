@@ -46,7 +46,7 @@ class Immortality extends Item {
 
     @Override
     public void update() {
-        if (PlayerPickUp() && timer == 0) {
+        if (PlayerPickUp() && timer < 0) {
             Audio.playEffect(Audio.collect_item);
             timer = 600;
             Bomberman.player.setImmortal(true);

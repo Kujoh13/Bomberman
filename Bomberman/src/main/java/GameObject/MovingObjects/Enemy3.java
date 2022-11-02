@@ -1,7 +1,7 @@
 package GameObject.MovingObjects;
 
 import GameObject.GameObject;
-import GameObject.NonMovingObjects.BreakableWall;
+import GameObject.NonMovingObjects.Brick;
 import GameObject.NonMovingObjects.Wall;
 import Graphics.Sprite;
 import Main.Bomberman;
@@ -34,7 +34,7 @@ public class Enemy3 extends Enemy {
         int newY = y + addY * velocity;
         boolean collide = touchBomb(newX, newY);;
         for (GameObject o : Bomberman.stillObjects) {
-            if ((o instanceof Wall || o instanceof BreakableWall)
+            if ((o instanceof Wall || o instanceof Brick)
                     && o.collision(newX, newY)) {
                 collide = true;
                 break;
@@ -49,7 +49,8 @@ public class Enemy3 extends Enemy {
     @Override
     public void update() {
         super.update();
-
+        if (isDead) return;
+        int prevX = x;
         if (fitSquare()) {
             int curX = x / Sprite.SCALED_SIZE;
             int curY = y / Sprite.SCALED_SIZE;
@@ -60,7 +61,7 @@ public class Enemy3 extends Enemy {
                 newX = i * Sprite.SCALED_SIZE;
                 boolean collide = touchBomb(newX, y);
                 for (GameObject o : Bomberman.stillObjects) {
-                    if ((o instanceof Wall || o instanceof BreakableWall)
+                    if ((o instanceof Wall || o instanceof Brick)
                             && o.collision(newX, y)) {
                         collide = true;
                         break;
@@ -77,6 +78,12 @@ public class Enemy3 extends Enemy {
                     addX = -1;
                     addY = 0;
                     modifyPosition();
+                    if (prevX < x) {
+                        img = Sprite.movingSprite(Sprite.doll_right1, Sprite.doll_right2, Sprite.doll_right2, Bomberman.animate, 30).getFxImage();
+                    }
+                    if (prevX > x) {
+                        img = Sprite.movingSprite(Sprite.doll_left1, Sprite.doll_left2, Sprite.doll_left2, Bomberman.animate, 30).getFxImage();
+                    }
                     return;
                 }
             }
@@ -85,7 +92,7 @@ public class Enemy3 extends Enemy {
                 newX = i * Sprite.SCALED_SIZE;
                 boolean collide = touchBomb(newX, y);
                 for (GameObject o : Bomberman.stillObjects) {
-                    if ((o instanceof Wall || o instanceof BreakableWall)
+                    if ((o instanceof Wall || o instanceof Brick)
                             && o.collision(newX, y)) {
                         collide = true;
                         break;
@@ -100,6 +107,12 @@ public class Enemy3 extends Enemy {
                     addX = 1;
                     addY = 0;
                     modifyPosition();
+                    if (prevX < x) {
+                        img = Sprite.movingSprite(Sprite.doll_right1, Sprite.doll_right2, Sprite.doll_right2, Bomberman.animate, 30).getFxImage();
+                    }
+                    if (prevX > x) {
+                        img = Sprite.movingSprite(Sprite.doll_left1, Sprite.doll_left2, Sprite.doll_left2, Bomberman.animate, 30).getFxImage();
+                    }
                     return;
                 }
             }
@@ -108,7 +121,7 @@ public class Enemy3 extends Enemy {
                 newY = i * Sprite.SCALED_SIZE;
                 boolean collide = touchBomb(x, newY);
                 for (GameObject o : Bomberman.stillObjects) {
-                    if ((o instanceof Wall || o instanceof BreakableWall)
+                    if ((o instanceof Wall || o instanceof Brick)
                             && o.collision(x, newY)) {
                         collide = true;
                         break;
@@ -123,6 +136,13 @@ public class Enemy3 extends Enemy {
                     addX = 0;
                     addY = -1;
                     modifyPosition();
+
+                    if (prevX < x) {
+                        img = Sprite.movingSprite(Sprite.doll_right1, Sprite.doll_right2, Sprite.doll_right2, Bomberman.animate, 30).getFxImage();
+                    }
+                    if (prevX > x) {
+                        img = Sprite.movingSprite(Sprite.doll_left1, Sprite.doll_left2, Sprite.doll_left2, Bomberman.animate, 30).getFxImage();
+                    }
                     return;
                 }
             }
@@ -131,7 +151,7 @@ public class Enemy3 extends Enemy {
                 newY = i * Sprite.SCALED_SIZE;
                 boolean collide = touchBomb(x, newY);
                 for (GameObject o : Bomberman.stillObjects) {
-                    if ((o instanceof Wall || o instanceof BreakableWall)
+                    if ((o instanceof Wall || o instanceof Brick)
                             && o.collision(x, newY)) {
                         collide = true;
                         break;
@@ -146,6 +166,13 @@ public class Enemy3 extends Enemy {
                     addX = 0;
                     addY = 1;
                     modifyPosition();
+
+                    if (prevX < x) {
+                        img = Sprite.movingSprite(Sprite.doll_right1, Sprite.doll_right2, Sprite.doll_right2, Bomberman.animate, 30).getFxImage();
+                    }
+                    if (prevX > x) {
+                        img = Sprite.movingSprite(Sprite.doll_left1, Sprite.doll_left2, Sprite.doll_left2, Bomberman.animate, 30).getFxImage();
+                    }
                     return;
                 }
             }
@@ -154,6 +181,13 @@ public class Enemy3 extends Enemy {
         }
         else {
             modifyPosition();
+        }
+
+        if (prevX < x) {
+            img = Sprite.movingSprite(Sprite.doll_right1, Sprite.doll_right2, Sprite.doll_right2, Bomberman.animate, 30).getFxImage();
+        }
+        if (prevX > x) {
+            img = Sprite.movingSprite(Sprite.doll_left1, Sprite.doll_left2, Sprite.doll_left2, Bomberman.animate, 30).getFxImage();
         }
     }
 }
