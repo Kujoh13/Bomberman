@@ -20,15 +20,6 @@ public class Enemy extends GameObject {
                 && y >= Sprite.SCALED_SIZE && y <= (Bomberman.HEIGHT - 2) * Sprite.SCALED_SIZE;
     }
 
-    public boolean touchBomb(int x, int y) {
-        for (Bomb bomb : Bomb.bombs) {
-            if (bomb.collision(x, y)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     @Override
     public void update() {
         if (isDead) {
