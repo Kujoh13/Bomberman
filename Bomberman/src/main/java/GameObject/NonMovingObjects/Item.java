@@ -131,15 +131,3 @@ class Bombs extends Item {
     }
 }
 
-class Portal extends Item {
-    public Portal(int x, int y, Image img) {
-        super(x, y, img);
-    }
-    public void update() {
-        if (PlayerPickUp()) {
-            Audio.playEffect(Audio.portal);
-            Bomberman.status = 1;
-            Bomberman.stillObjects.remove(this);
-        }
-    }
-}
