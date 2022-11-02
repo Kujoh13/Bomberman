@@ -13,3 +13,16 @@
 #.#.#.#.#.#.#.#.#.#.#.#.#
 #.......................#
 #########################
+
+
+/**
+. : grass
+# : wall
+x : brick
+n : more bomb
+p : portal
+s : speed
+r : larger bomb radius
+i : immortal
+t : teleport
+*/
