@@ -1,10 +1,7 @@
 package GameObject.MovingObjects;
 
 import GameObject.GameObject;
-import GameObject.NonMovingObjects.Bomb;
-import GameObject.NonMovingObjects.Brick;
-import GameObject.NonMovingObjects.Explosion;
-import GameObject.NonMovingObjects.Wall;
+import GameObject.NonMovingObjects.*;
 import Graphics.Sprite;
 import Main.Bomberman;
 import Sounds.Audio;
@@ -153,16 +150,15 @@ public class Player extends GameObject {
 
     private void moveTo(Stats cur) {
         Stats root = new Stats(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, null);
-        if (!cur.equals(root)) {
-            if (fitSquare()) {
-                while (!cur.pre.equals(root)) {
-                    cur = cur.pre;
-                }
-                addX = cur.x - (x / Sprite.SCALED_SIZE);
-                addY = cur.y - (y / Sprite.SCALED_SIZE);
+        if (fitSquare()) {
+            while (cur.pre != null && !cur.pre.equals(root)) {
+                cur = cur.pre;
             }
-            modifyPosition();
+            addX = cur.x - (x / Sprite.SCALED_SIZE);
+            addY = cur.y - (y / Sprite.SCALED_SIZE);
+            //System.out.println(cur.x + " " + cur.y);
         }
+        modifyPosition();
     }
 
     private void resetPassed() {
@@ -183,7 +179,7 @@ public class Player extends GameObject {
         Stats block = null;
         int newX, newY;
         Stats safePlace = null;
-
+        Stats end = null;
         Queue<Stats> move = new LinkedList<>();
 
         resetPassed();
@@ -205,6 +201,16 @@ public class Player extends GameObject {
                 break;
             }
 
+            for (GameObject o : Bomberman.stillObjects) {
+                if (o instanceof Portal)
+                    for (int i = 0; i < 4; i++) {
+                        if (o.collision(cur.x * Sprite.SCALED_SIZE + difX[i],
+                                cur.y * Sprite.SCALED_SIZE + difY[i])) {
+                            end = cur;
+                        }
+                    }
+            }
+
             if (block == null) {
                 for (GameObject o : Bomberman.stillObjects) {
                     if (o instanceof Brick)
@@ -223,7 +229,7 @@ public class Player extends GameObject {
 
                 boolean collide = touchBomb(newX * Sprite.SCALED_SIZE, newY * Sprite.SCALED_SIZE);
                 for (GameObject o : Bomberman.stillObjects) {
-                    if ((o instanceof Wall || o instanceof BreakableWall)
+                    if ((o instanceof Wall || o instanceof Brick)
                             && o.collision(newX * Sprite.SCALED_SIZE, newY * Sprite.SCALED_SIZE)) {
                         collide = true;
                         break;
@@ -234,79 +240,101 @@ public class Player extends GameObject {
                 }
             }
         }
-        if (fitSquare()) {
-            if (Bomb.bombs.size() < 1) {
-                if (--timer > 0) {
-                    return;
+
+        if (Bomb.bombs.size() < 1) {
+            if (--timer > 0) {
+                return;
+            }
+
+            if (meetEnemy) {
+                moveTo(cur.pre);
+                if (checkBombPlace().equals(cur.pre)) {
+                    if (Bomb.placeBomb()) {
+                        Audio.playEffect(Audio.bomb_fuse);
+                    }
+
+                    addX = -addX;
+                    addY = -addY;
+                }
+            } else {
+                if (end != null) {
+                    moveTo(end);
                 }
 
-                if (meetEnemy) {
-                    moveTo(cur.pre);
-                    if (cur.pre.equals(new Stats(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, null))) {
+                if (block != null) {
+                    moveTo(block);
+                    if (block.equals(new Stats(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, null))) {
                         if (Bomb.placeBomb()) {
                             Audio.playEffect(Audio.bomb_fuse);
                         }
 
                         addX = -addX;
                         addY = -addY;
-                        modifyPosition();
                     }
-                } else {
-                    if (block != null) {
-                        moveTo(block);
-                        if (block.equals(new Stats(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, null))) {
-                            if (Bomb.placeBomb()) {
-                                Audio.playEffect(Audio.bomb_fuse);
-                            }
-
-                            addX = -addX;
-                            addY = -addY;
-                            modifyPosition();
-                        }
-                    }
-                }
-            } else {
-                move.clear();
-
-                root = new Stats(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, null);
-
-                move.add(root);
-                resetPassed();
-
-                while (!move.isEmpty()) {
-                    cur = move.poll();
-                    passed[cur.x][cur.y] = true;
-
-                    if (!getBoomed(cur.x * Sprite.SCALED_SIZE, cur.y * Sprite.SCALED_SIZE)) {
-                        safePlace = cur;
-                        break;
-                    }
-
-                    for (int i = 0; i < 4; i++) {
-                        newX = cur.x + difX[i];
-                        newY = cur.y + difY[i];
-
-                        boolean collide = touchBomb(newX * Sprite.SCALED_SIZE, newY * Sprite.SCALED_SIZE);
-                        for (GameObject o : Bomberman.stillObjects) {
-                            if ((o instanceof Wall || o instanceof BreakableWall)
-                                    && o.collision(newX * Sprite.SCALED_SIZE, newY * Sprite.SCALED_SIZE)) {
-                                collide = true;
-                                break;
-                            }
-                        }
-                        if (!collide && !passed[newX][newY]) {
-                            move.add(new Stats(newX, newY, cur));
-                        }
-                    }
-                }
-                if (safePlace != null) {
-                    moveTo(safePlace);
-                    timer = 15;
                 }
             }
         } else {
-            modifyPosition();
+            move.clear();
+
+            root = new Stats(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, null);
+
+            move.add(root);
+            resetPassed();
+
+            while (!move.isEmpty()) {
+                cur = move.poll();
+                passed[cur.x][cur.y] = true;
+
+                if (!getBoomed(cur.x * Sprite.SCALED_SIZE, cur.y * Sprite.SCALED_SIZE)) {
+                    safePlace = cur;
+                    break;
+                }
+
+                for (int i = 0; i < 4; i++) {
+                    newX = cur.x + difX[i];
+                    newY = cur.y + difY[i];
+
+                    boolean collide = touchBomb(newX * Sprite.SCALED_SIZE, newY * Sprite.SCALED_SIZE);
+                    for (GameObject o : Bomberman.stillObjects) {
+                        if ((o instanceof Wall || o instanceof Brick)
+                                && o.collision(newX * Sprite.SCALED_SIZE, newY * Sprite.SCALED_SIZE)) {
+                            collide = true;
+                            break;
+                        }
+                    }
+                    if (!collide && !passed[newX][newY]) {
+                        move.add(new Stats(newX, newY, cur));
+                    }
+                }
+            }
+            if (safePlace != null) {
+                moveTo(safePlace);
+                timer = 15;
+                //System.out.println(safePlace.x + " " + safePlace.y);
+            }
         }
+    }
+
+    private Stats checkBombPlace() {
+        int x = Bomberman.player.getX();
+        int y = Bomberman.player.getY();
+        int finalX = 1, finalY = 1;
+        int collisionArea = 0;
+        for (GameObject o: Bomberman.stillObjects) {
+            if (o instanceof Grass && o.collision(Bomberman.player)) {
+                int x1 = Math.max(Bomberman.player.getX(), o.getX());
+                int x2 = Math.min(Bomberman.player.getX(), o.getX()) + Sprite.SCALED_SIZE - 1;
+                int y1 = Math.max(Bomberman.player.getY(), o.getY());
+                int y2 = Math.min(Bomberman.player.getY(), o.getY()) + Sprite.SCALED_SIZE - 1;
+                if ((x2 - x1) * (y2 - y1) > collisionArea) {
+                    finalX = o.getX() / Sprite.SCALED_SIZE;
+                    finalY = o.getY() / Sprite.SCALED_SIZE;
+                    collisionArea = (x2 - x1) * (y2 - y1);
+                }
+            }
+        }
+
+        return new Stats(finalX, finalY, null);
     }
 
     private static boolean collisionBetween(int ox, int oy, int px, int py) {
@@ -332,7 +360,7 @@ public class Player extends GameObject {
                             return true;
                         }
                         for (GameObject o : Bomberman.stillObjects) {
-                            if ((o instanceof Wall || o instanceof BreakableWall)
+                            if ((o instanceof Wall || o instanceof Brick)
                                     && o.collision(i, bomb.getY())) {
                                 collide = true;
 
@@ -351,7 +379,7 @@ public class Player extends GameObject {
                         }
 
                         for (GameObject o : Bomberman.stillObjects) {
-                            if ((o instanceof Wall || o instanceof BreakableWall)
+                            if ((o instanceof Wall || o instanceof Brick)
                                     && o.collision(i, bomb.getY())) {
                                 collide = true;
                                 break;
@@ -371,7 +399,7 @@ public class Player extends GameObject {
                         }
 
                         for (GameObject o : Bomberman.stillObjects) {
-                            if ((o instanceof Wall || o instanceof BreakableWall)
+                            if ((o instanceof Wall || o instanceof Brick)
                                     && o.collision(bomb.getX(), i)) {
                                 collide = true;
                                 break;
@@ -389,7 +417,7 @@ public class Player extends GameObject {
                         }
 
                         for (GameObject o : Bomberman.stillObjects) {
-                            if ((o instanceof Wall || o instanceof BreakableWall)
+                            if ((o instanceof Wall || o instanceof Brick)
                                     && o.collision(bomb.getX(), i)) {
                                 collide = true;
                                 break;
