@@ -20,6 +20,8 @@ public class Enemy extends GameObject {
                 && y >= Sprite.SCALED_SIZE && y <= (Bomberman.HEIGHT - 2) * Sprite.SCALED_SIZE;
     }
 
+
+
     @Override
     public void update() {
         if (isDead) {

@@ -17,6 +17,7 @@ public class Bomb extends GameObject {
     private static final int[] col = {1, 0, -1, 0};
     public boolean collidePlayer = true;
     public static List<Bomb> bombs = new ArrayList<>();
+
     public Bomb(int x, int y, Image img) {
         super(x, y, img);
     }
