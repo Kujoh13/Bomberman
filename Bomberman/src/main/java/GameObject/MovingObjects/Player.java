@@ -130,6 +130,8 @@ public class Player extends GameObject {
     private boolean[][] passed = new boolean[25][15];
     private int addX;
     private int addY;
+    private int timer = 0;
+
     private static class Stats {
         /** x and y are in position not pixels */
         private int x;
@@ -234,6 +236,10 @@ public class Player extends GameObject {
         }
         if (fitSquare()) {
             if (Bomb.bombs.size() < 1) {
+                if (--timer > 0) {
+                    return;
+                }
+
                 if (meetEnemy) {
                     moveTo(cur.pre);
                     if (cur.pre.equals(new Stats(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, null))) {
@@ -295,20 +301,12 @@ public class Player extends GameObject {
                 }
                 if (safePlace != null) {
                     moveTo(safePlace);
+                    timer = 15;
                 }
             }
         } else {
             modifyPosition();
         }
-    }
-
-    private boolean ExplosionExists() {
-        for (GameObject o : Bomberman.stillObjects) {
-            if (o instanceof Explosion) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private static boolean collisionBetween(int ox, int oy, int px, int py) {
