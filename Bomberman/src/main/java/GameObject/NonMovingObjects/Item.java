@@ -47,7 +47,7 @@ class Immortality extends Item {
 
     @Override
     public void update() {
-        if (PlayerPickUp() && timer < 0) {
+        if (PlayerPickUp() && timer <= 0) {
             Audio.playEffect(Audio.collect_item);
             timer = 600;
             Bomberman.player.setImmortal(true);
@@ -67,7 +67,7 @@ class SpeedUp extends Item {
 
     @Override
     public void update() {
-        if (PlayerPickUp() && timer == 0) {
+        if (PlayerPickUp() && timer <= 0) {
             Audio.playEffect(Audio.collect_item);
             Player.player_speed = 6;
             timer = 600;
@@ -86,7 +86,6 @@ class Teleport extends Item {
     }
 
     public void update() {
-
         if (PlayerPickUp()) {
             Audio.playEffect(Audio.collect_item);
             Random rd = new Random();
