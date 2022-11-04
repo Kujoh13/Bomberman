@@ -247,7 +247,8 @@ public class Player extends GameObject {
 
             if (meetEnemy) {
                 moveTo(cur.pre);
-                if (checkBombPlace().equals(cur.pre)) {
+
+                if (checkBombPlace().equals(cur.pre) || checkBombPlace().equals(cur)) {
                     if (Bomb.placeBomb()) {
                         Audio.playEffect(Audio.bomb_fuse);
                     }
