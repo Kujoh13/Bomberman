@@ -156,7 +156,6 @@ public class Player extends GameObject {
             }
             addX = cur.x - (x / Sprite.SCALED_SIZE);
             addY = cur.y - (y / Sprite.SCALED_SIZE);
-            //System.out.println(cur.x + " " + cur.y);
         }
         modifyPosition();
     }
@@ -310,7 +309,6 @@ public class Player extends GameObject {
             if (safePlace != null) {
                 moveTo(safePlace);
                 timer = 15;
-                //System.out.println(safePlace.x + " " + safePlace.y);
             }
         }
     }

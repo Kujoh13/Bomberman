@@ -2,6 +2,7 @@ package GameObject.NonMovingObjects;
 
 import GameObject.GameObject;
 import GameObject.MovingObjects.Player;
+import Graphics.Sprite;
 import Main.Bomberman;
 import Sounds.Audio;
 import javafx.scene.canvas.GraphicsContext;
