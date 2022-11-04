@@ -2,6 +2,7 @@ package GameObject.NonMovingObjects;
 
 import GameObject.GameObject;
 import GameObject.MovingObjects.Player;
+import Graphics.Sprite;
 import Main.Bomberman;
 import Sounds.Audio;
 import javafx.scene.canvas.GraphicsContext;
@@ -90,16 +91,28 @@ class Teleport extends Item {
             Audio.playEffect(Audio.collect_item);
             Random rd = new Random();
 
-            int nextX = rd.nextInt() % (Bomberman.WIDTH - 1) + 1;
-            int nextY = rd.nextInt() % (Bomberman.HEIGHT - 1) + 1;
+            int nextX = rd.nextInt(Bomberman.WIDTH) + 1;
+            int nextY = rd.nextInt(Bomberman.HEIGHT) + 1;
 
+            boolean satisfying = false;
             while (Bomberman.map[nextX][nextY] != 2) {
-                nextX = rd.nextInt() % (Bomberman.WIDTH - 1) + 1;
-                nextY = rd.nextInt() % (Bomberman.HEIGHT - 1) + 1;
+                for (GameObject o : Bomberman.stillObjects) {
+                    if ((o instanceof Wall || o instanceof Brick)
+                        && o.collision(nextX * Sprite.SCALED_SIZE, nextY * Sprite.SCALED_SIZE)) {
+                        satisfying = true;
+                        break;
+                    }
+                }
+                if (satisfying) {
+                    break;
+                }
+
+                nextX = rd.nextInt(Bomberman.WIDTH) + 1;
+                nextY = rd.nextInt(Bomberman.HEIGHT) + 1;
             }
 
-            Bomberman.player.setX(nextX);
-            Bomberman.player.setY(nextY);
+            Bomberman.player.setX(nextX * Sprite.SCALED_SIZE);
+            Bomberman.player.setY(nextY * Sprite.SCALED_SIZE);
             Bomberman.stillObjects.remove(this);
         }
     }
