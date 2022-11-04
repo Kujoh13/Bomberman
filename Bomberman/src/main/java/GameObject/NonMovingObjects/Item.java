@@ -94,7 +94,7 @@ class Teleport extends Item {
             int nextY = rd.nextInt(Bomberman.HEIGHT) + 1;
 
             boolean satisfying = false;
-            while (Bomberman.map[nextX][nextY] != 2) {
+            while (true) {
                 for (GameObject o : Bomberman.stillObjects) {
                     if ((o instanceof Wall || o instanceof Brick)
                         && o.collision(nextX * Sprite.SCALED_SIZE, nextY * Sprite.SCALED_SIZE)) {
