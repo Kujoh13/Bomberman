@@ -244,7 +244,7 @@ public class Bomberman extends Application {
             loadLevel();
         }
 
-        //player.auto();
+        player.auto();
     }
 
     /** Render objects. */

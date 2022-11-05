@@ -50,6 +50,7 @@ public class Enemy3 extends Enemy {
     public void update() {
         super.update();
         if (isDead) return;
+
         int prevX = x;
         if (fitSquare()) {
             int curX = x / Sprite.SCALED_SIZE;
