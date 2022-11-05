@@ -15,6 +15,7 @@ public class Enemy3 extends Enemy {
     private int addY;
     public Enemy3(int x, int y, Image img) {
         super(x, y, img);
+        dead = Sprite.doll_dead;
     }
 
     private void modifyPosition() {
