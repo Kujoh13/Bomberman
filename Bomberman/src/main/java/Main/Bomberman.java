@@ -230,7 +230,7 @@ public class Bomberman extends Application {
 
         if (status == -1) {
             loseTimer--;
-            player.setImg(Sprite.movingSprite(Sprite.player_dead1, Sprite.player_dead2, Sprite.player_dead3, animate, 400).getFxImage());
+            player.setImg(Sprite.movingSprite(Sprite.player_dead2, Sprite.player_dead3, Sprite.player_dead1, animate, 400).getFxImage());
             if (loseTimer == 0)
                 reset();
         } else if (status == 1) {
